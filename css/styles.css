@@ -1,5 +1,63 @@
 /* Custom Styles for REBWB */
 
+/* Light Mode Theme */
+html.light-mode {
+    --bg-primary: #f9fafb;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f3f4f6;
+    --text-primary: #111827;
+    --text-secondary: #374151;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+}
+
+html.light-mode body {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+html.light-mode .bg-gray-900,
+html.light-mode .bg-gray-800 {
+    background-color: var(--bg-secondary) !important;
+}
+
+html.light-mode .bg-gray-700 {
+    background-color: var(--bg-tertiary) !important;
+}
+
+html.light-mode .text-gray-100,
+html.light-mode .text-white {
+    color: var(--text-primary) !important;
+}
+
+html.light-mode .text-gray-300,
+html.light-mode .text-gray-400 {
+    color: var(--text-secondary) !important;
+}
+
+html.light-mode .text-gray-500 {
+    color: var(--text-muted) !important;
+}
+
+html.light-mode .border-gray-700,
+html.light-mode .border-gray-600 {
+    border-color: var(--border-color) !important;
+}
+
+html.light-mode nav {
+    background-color: #ffffff !important;
+    border-color: var(--border-color) !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+html.light-mode ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+html.light-mode ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+}
+
 /* Smooth scrolling */
 html {
     scroll-behavior: smooth;
