@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course - REBWB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-xl font-bold text-white">REBWB</a>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-300 hover:text-white transition">Home</a>
+                    <a href="course.html" class="text-white font-semibold">Course</a>
+                    <a href="dealpilot.html" class="text-gray-300 hover:text-white transition">DealPilot</a>
+                    <a href="templates.html" class="text-gray-300 hover:text-white transition">Templates</a>
+                    <a href="tools.html" class="text-gray-300 hover:text-white transition">Tools</a>
+                    <a href="faq.html" class="text-gray-300 hover:text-white transition">FAQ</a>
+                    <a href="about.html" class="text-gray-300 hover:text-white transition">About</a>
+                    <button onclick="signOut()" class="text-gray-300 hover:text-white transition">Logout</button>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-800 border-t border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Home</a>
+                <a href="course.html" class="block px-3 py-2 text-white bg-gray-700 rounded">Course</a>
+                <a href="dealpilot.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">DealPilot</a>
+                <a href="templates.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Templates</a>
+                <a href="tools.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Tools</a>
+                <a href="faq.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">FAQ</a>
+                <a href="about.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">About</a>
+                <button onclick="signOut()" class="block w-full text-left px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Logout</button>
+            </div>
+        </div>
+    </nav>
+    <script src="js/auth.js"></script>
+    <script>requireAuth();</script>
+
+    <!-- Hero -->
+    <section class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">The Complete Course</h1>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">15 practical modules designed to take you from beginner to confident investor.</p>
+        </div>
+    </section>
+
+    <!-- Course Introduction Audio -->
+    <section class="py-8 bg-gray-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+                <h3 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                    </svg>
+                    Course Introduction
+                </h3>
+                <audio controls class="w-full">
+                    <source src="audio/00-course-intro.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Modules -->
+    <section class="py-16 bg-gray-900">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-12 text-center">Course Curriculum</h2>
+            
+            <div class="space-y-4">
+                <!-- Module 1 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">1</span>
+                            <span class="font-semibold text-lg">What Real Estate Is</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/01-what-real-estate-is.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture (16 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-01-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Real estate is an operations business, not a passive income machine.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">2</span>
+                            <span class="font-semibold text-lg">Deal Math</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/02-deal-math.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture (13 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-02-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Stress-test deals by asking "what breaks this?" not "how good could this be?"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">3</span>
+                            <span class="font-semibold text-lg">Debt</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/03-debt.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture (13 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-03-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Debt is conditional—evaluate whether it increases or reduces your options.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 4 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">4</span>
+                            <span class="font-semibold text-lg">Ownership & Operations</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/04-ownership-operations.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture (13 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-04-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">The work begins at closing, not ends there.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 5 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">5</span>
+                            <span class="font-semibold text-lg">Mistakes & Losses</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/05-mistakes-losses.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture (9 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-05-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Losses happen. Extract lessons without shame.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 6 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">6</span>
+                            <span class="font-semibold text-lg">Portfolio Thinking</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/06-portfolio-thinking.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture - Financing Strategies (3.5 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-06-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Some of the healthiest portfolios are smaller than their owners could afford.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 7 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">7</span>
+                            <span class="font-semibold text-lg">Taxes, Time & Burnout</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/07-taxes-time-burnout.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture - Negotiation Mastery (3 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-07-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">If ownership consumes your life, you've lost even if the numbers work.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 8 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">8</span>
+                            <span class="font-semibold text-lg">Success</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/08-success.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture - Property Management (2.8 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-08-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Success is durability, not constant motion.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 9 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">9</span>
+                            <span class="font-semibold text-lg">Operating Systems</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/09-operating-systems.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture - Tax Strategies (2.9 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-09-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Build systems that run without requiring your constant attention.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 10 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">10</span>
+                            <span class="font-semibold text-lg">Financial Infrastructure</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/10-financial-infrastructure.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture - Exit Strategies (2.8 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-10-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Financial infrastructure separates operators from hobbyists.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 11 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">11</span>
+                            <span class="font-semibold text-lg">Tenant Management</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/11-tenant-management.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture - Legal Protection (2.8 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-11-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Manage tenants professionally—neither pushover nor tyrant.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 12 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">12</span>
+                            <span class="font-semibold text-lg">Contractor Management</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/12-contractor-management.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture - Scaling Your Portfolio (2.7 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-12-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Contractors perform when scopes are clear and relationships are fair.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 13 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">13</span>
+                            <span class="font-semibold text-lg">Property Analysis</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/13-property-analysis.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture - Market Cycles (2.8 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-13-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Analyze based on evidence, not optimism.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 14 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">14</span>
+                            <span class="font-semibold text-lg">Exit Strategy</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-400 mb-2">Quick Intro (2 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/14-exit-strategy.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture - Your Action Plan (2.5 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-14-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-blue-900 bg-opacity-20 border-l-4 border-blue-500 p-4 mb-4">
+                            <p class="font-semibold text-blue-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Selling is strategic, not surrender. Aim for optionality.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 15 -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-green-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">15</span>
+                            <span class="font-semibold text-lg">Term Sheets & First Deals</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <div class="mb-4">
+                            <p class="text-sm text-blue-400 mb-2 font-semibold">Full Lecture (3.5 min)</p>
+                            <audio controls class="w-full mb-3">
+                                <source src="audio/modules/module-15-complete.mp3" type="audio/mpeg">
+                            </audio>
+                        </div>
+                        <div class="bg-green-900 bg-opacity-20 border-l-4 border-green-500 p-4 mb-4">
+                            <p class="font-semibold text-green-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Understand every term before signing. The power shifts when you demonstrate competence.</p>
+                        </div>
+                        <a href="module15-tools.html" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                            </svg>
+                            Open Interactive Tools
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Term Sheets Module (Financing Deep Dive) -->
+                <div class="bg-gray-800 rounded-lg border border-amber-600 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-amber-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm">$</span>
+                            <div>
+                                <span class="font-semibold text-lg">Loan Term Sheets</span>
+                                <span class="ml-2 bg-amber-900 text-amber-300 px-2 py-0.5 rounded text-xs">FINANCING</span>
+                            </div>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <p class="text-gray-300 mb-4">How Real Estate Deals Actually Break. A borrower-first approach to reading, evaluating, and negotiating financing terms.</p>
+                        <div class="mb-4 text-sm text-gray-400">
+                            <span>6 Lessons + Bonus</span> • <span>Interactive Diagnostic Tool</span> • <span>3 Term Sheet Examples</span>
+                        </div>
+                        <div class="bg-amber-900 bg-opacity-20 border-l-4 border-amber-500 p-4 mb-4">
+                            <p class="font-semibold text-amber-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">Understand your downside before calculating your upside. Every term sheet is a risk allocation document.</p>
+                        </div>
+                        <a href="term-sheets/index.html" class="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-semibold transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                            Enter Financing Module
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Module X: How to Stop -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button class="module-toggle w-full px-6 py-4 flex justify-between items-center hover:bg-gray-750 transition">
+                        <div class="flex items-center gap-4">
+                            <span class="bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">X</span>
+                            <span class="font-semibold text-lg">How to Stop</span>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-400 transform transition-transform module-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="module-content hidden px-6 py-4 border-t border-gray-700 bg-gray-850">
+                        <p class="text-gray-300 mb-4">A discipline module focused on disqualification, restraint, and early exit.</p>
+                        <div class="bg-red-900 bg-opacity-20 border-l-4 border-red-500 p-4 mb-4">
+                            <p class="font-semibold text-red-300">Key Takeaway:</p>
+                            <p class="text-gray-300 mt-1">The best investors are defined by what they don't buy.</p>
+                        </div>
+                        <a href="module-x-how-to-stop.html" class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                            Enter Module X
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Workbook Download -->
+            <div class="mt-12 bg-gray-800 rounded-lg p-6 border border-gray-700">
+                <h3 class="text-xl font-semibold mb-4">Module X Workbook</h3>
+                <p class="text-gray-400 mb-4">Interactive Deal Analyzer with AI Assist, Fix & Flip analysis, and Comps Prompt Generator.</p>
+                <a href="workbook.html" class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 border border-green-500 px-4 py-3 rounded-lg transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                    </svg>
+                    Open Interactive Workbook
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gray-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+            <p class="text-xl text-gray-300 mb-8">Join hundreds of students learning real estate investing the right way.</p>
+            <a href="index.html#pricing" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition">
+                View Pricing
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 REBWB - Real Estate Without Bullshit. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 15 Tools - REBWB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .tool-card { transition: all 0.3s ease; }
+        .tool-card:hover { transform: translateY(-2px); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .accordion-content.open { max-height: 2000px; }
+        .rating-good { background: #065f46; border-color: #10b981; }
+        .rating-ok { background: #92400e; border-color: #f59e0b; }
+        .rating-bad { background: #991b1b; border-color: #ef4444; }
+        input, textarea, select { background: #1f2937 !important; }
+        @media (max-width: 768px) {
+            .comparison-grid { display: block !important; }
+            .comparison-col { margin-bottom: 1rem; }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="text-xl font-bold text-white">REBWB</a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-300 hover:text-white">Home</a>
+                    <a href="course.html" class="text-gray-300 hover:text-white">Course</a>
+                    <a href="dealpilot.html" class="text-gray-300 hover:text-white">DealPilot</a>
+                    <a href="templates.html" class="text-gray-300 hover:text-white">Templates</a>
+                    <a href="tools.html" class="text-gray-300 hover:text-white">Tools</a>
+                    <button onclick="signOut()" class="text-gray-300 hover:text-white">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script src="js/auth.js"></script>
+    <script>requireAuth();</script>
+
+    <!-- Header -->
+    <section class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-12">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">Module 15: Interactive Tools</h1>
+            <p class="text-gray-300 text-lg">Term Sheets, First Deals & Decision Frameworks</p>
+            <p class="text-gray-400 mt-2 text-sm">Complete these directly on any device. No printing required.</p>
+        </div>
+    </section>
+
+    <div class="max-w-5xl mx-auto px-4 py-8 space-y-8">
+
+        <!-- TOOL 1: Term Sheet Comparison -->
+        <div class="tool-card bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+            <button onclick="toggleAccordion('tool1')" class="w-full px-6 py-5 flex justify-between items-center hover:bg-gray-750">
+                <div class="flex items-center gap-4">
+                    <span class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">1</span>
+                    <div class="text-left">
+                        <h3 class="font-semibold text-lg">Term Sheet Comparison Tool</h3>
+                        <p class="text-gray-400 text-sm">Compare up to 3 lenders side-by-side</p>
+                    </div>
+                </div>
+                <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="arrow1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+            <div id="tool1" class="accordion-content">
+                <div class="px-6 py-6 border-t border-gray-700">
+                    <!-- Mobile: Step by step | Desktop: Side by side -->
+                    <div class="grid md:grid-cols-3 gap-4 comparison-grid">
+                        <!-- Lender A -->
+                        <div class="comparison-col bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold text-blue-400 mb-4">Lender A</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Lender Name</label>
+                                    <input type="text" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., ABC Hard Money">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Interest Rate (%)</label>
+                                    <input type="number" step="0.1" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., 12">
+                                    <p class="text-xs text-gray-500 mt-1">Annual rate. 10-12% = competitive, 14%+ = expensive</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Points (Origination %)</label>
+                                    <input type="number" step="0.5" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., 2">
+                                    <p class="text-xs text-gray-500 mt-1">1-2 pts = fair, 3+ pts = high</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">LTV Offered (%)</label>
+                                    <input type="number" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., 70">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Prepayment Penalty?</label>
+                                    <select class="w-full px-3 py-2 rounded border border-gray-600 text-white">
+                                        <option value="">Select...</option>
+                                        <option value="none">None</option>
+                                        <option value="3mo">3 months minimum</option>
+                                        <option value="6mo">6 months minimum</option>
+                                        <option value="penalty">Penalty fee</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Draw Funding Speed</label>
+                                    <select class="w-full px-3 py-2 rounded border border-gray-600 text-white">
+                                        <option value="">Select...</option>
+                                        <option value="24hr">24-48 hours</option>
+                                        <option value="week">3-7 days</option>
+                                        <option value="slow">7+ days</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Personal Guarantee Required?</label>
+                                    <select class="w-full px-3 py-2 rounded border border-gray-600 text-white">
+                                        <option value="">Select...</option>
+                                        <option value="no">No</option>
+                                        <option value="limited">Limited to property</option>
+                                        <option value="full">Full personal guarantee</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Lender B -->
+                        <div class="comparison-col bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold text-green-400 mb-4">Lender B</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Lender Name</label>
+                                    <input type="text" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., XYZ Capital">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Interest Rate (%)</label>
+                                    <input type="number" step="0.1" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., 12">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Points (Origination %)</label>
+                                    <input type="number" step="0.5" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., 2">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">LTV Offered (%)</label>
+                                    <input type="number" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., 70">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Prepayment Penalty?</label>
+                                    <select class="w-full px-3 py-2 rounded border border-gray-600 text-white">
+                                        <option value="">Select...</option>
+                                        <option value="none">None</option>
+                                        <option value="3mo">3 months minimum</option>
+                                        <option value="6mo">6 months minimum</option>
+                                        <option value="penalty">Penalty fee</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Draw Funding Speed</label>
+                                    <select class="w-full px-3 py-2 rounded border border-gray-600 text-white">
+                                        <option value="">Select...</option>
+                                        <option value="24hr">24-48 hours</option>
+                                        <option value="week">3-7 days</option>
+                                        <option value="slow">7+ days</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Personal Guarantee Required?</label>
+                                    <select class="w-full px-3 py-2 rounded border border-gray-600 text-white">
+                                        <option value="">Select...</option>
+                                        <option value="no">No</option>
+                                        <option value="limited">Limited to property</option>
+                                        <option value="full">Full personal guarantee</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Lender C -->
+                        <div class="comparison-col bg-gray-900 rounded-lg p-4 border border-gray-600">
+                            <h4 class="font-semibold text-purple-400 mb-4">Lender C</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Lender Name</label>
+                                    <input type="text" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., 123 Lending">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Interest Rate (%)</label>
+                                    <input type="number" step="0.1" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., 12">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Points (Origination %)</label>
+                                    <input type="number" step="0.5" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., 2">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">LTV Offered (%)</label>
+                                    <input type="number" class="w-full px-3 py-2 rounded border border-gray-600 text-white" placeholder="e.g., 70">
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Prepayment Penalty?</label>
+                                    <select class="w-full px-3 py-2 rounded border border-gray-600 text-white">
+                                        <option value="">Select...</option>
+                                        <option value="none">None</option>
+                                        <option value="3mo">3 months minimum</option>
+                                        <option value="6mo">6 months minimum</option>
+                                        <option value="penalty">Penalty fee</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Draw Funding Speed</label>
+                                    <select class="w-full px-3 py-2 rounded border border-gray-600 text-white">
+                                        <option value="">Select...</option>
+                                        <option value="24hr">24-48 hours</option>
+                                        <option value="week">3-7 days</option>
+                                        <option value="slow">7+ days</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm text-gray-400 mb-1">Personal Guarantee Required?</label>
+                                    <select class="w-full px-3 py-2 rounded border border-gray-600 text-white">
+                                        <option value="">Select...</option>
+                                        <option value="no">No</option>
+                                        <option value="limited">Limited to property</option>
+                                        <option value="full">Full personal guarantee</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-4 bg-blue-900 bg-opacity-30 rounded-lg border border-blue-700">
+                        <p class="font-semibold text-blue-300">Decision Prompt:</p>
+                        <p class="text-gray-300 mt-2">After comparing, ask yourself: Which lender offers the best combination of low cost and flexibility? Can you negotiate any terms? Is walking away the better choice?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOOL 2: Red Flags Checklist -->
+        <div class="tool-card bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+            <button onclick="toggleAccordion('tool2')" class="w-full px-6 py-5 flex justify-between items-center hover:bg-gray-750">
+                <div class="flex items-center gap-4">
+                    <span class="bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">2</span>
+                    <div class="text-left">
+                        <h3 class="font-semibold text-lg">Term Sheet Red Flags Checklist</h3>
+                        <p class="text-gray-400 text-sm">Check each item before signing</p>
+                    </div>
+                </div>
+                <svg class="w-5 h-5 text-gray-400" id="arrow2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+            <div id="tool2" class="accordion-content">
+                <div class="px-6 py-6 border-t border-gray-700 space-y-4">
+                    <p class="text-gray-400 mb-4">Check each box only if you've verified the term is acceptable:</p>
+                    
+                    <div class="space-y-3">
+                        <label class="flex items-start gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700 cursor-pointer hover:border-gray-500">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded">
+                            <div>
+                                <p class="font-medium">No Cross-Collateralization</p>
+                                <p class="text-sm text-gray-400">Lender cannot claim your other properties if this deal defaults</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700 cursor-pointer hover:border-gray-500">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded">
+                            <div>
+                                <p class="font-medium">No Blanket Liens</p>
+                                <p class="text-sm text-gray-400">Lien is specific to this property, not your entire business</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700 cursor-pointer hover:border-gray-500">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded">
+                            <div>
+                                <p class="font-medium">Reasonable Prepayment Terms</p>
+                                <p class="text-sm text-gray-400">No penalty or penalty shorter than expected hold time</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700 cursor-pointer hover:border-gray-500">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded">
+                            <div>
+                                <p class="font-medium">Clear Default Definition</p>
+                                <p class="text-sm text-gray-400">You understand exactly what triggers default and cure period exists</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700 cursor-pointer hover:border-gray-500">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded">
+                            <div>
+                                <p class="font-medium">Draw Schedule is Workable</p>
+                                <p class="text-sm text-gray-400">You can cash-flow the gap if draws are funded in arrears</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700 cursor-pointer hover:border-gray-500">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded">
+                            <div>
+                                <p class="font-medium">Extension Options Exist</p>
+                                <p class="text-sm text-gray-400">Clear path to extend if project takes longer than expected</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700 cursor-pointer hover:border-gray-500">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded">
+                            <div>
+                                <p class="font-medium">All Fees Disclosed</p>
+                                <p class="text-sm text-gray-400">No hidden fees. All costs clearly itemized</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700 cursor-pointer hover:border-gray-500">
+                            <input type="checkbox" class="mt-1 w-5 h-5 rounded">
+                            <div>
+                                <p class="font-medium">I Understand Every Term</p>
+                                <p class="text-sm text-gray-400">No terms I can't explain to someone else</p>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-red-900 bg-opacity-30 rounded-lg border border-red-700">
+                        <p class="font-semibold text-red-300">If any box is unchecked:</p>
+                        <p class="text-gray-300 mt-2">Do NOT sign until resolved. Ask questions. Negotiate. Or walk away.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOOL 3: Flip vs Hold Decision Framework -->
+        <div class="tool-card bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+            <button onclick="toggleAccordion('tool3')" class="w-full px-6 py-5 flex justify-between items-center hover:bg-gray-750">
+                <div class="flex items-center gap-4">
+                    <span class="bg-green-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">3</span>
+                    <div class="text-left">
+                        <h3 class="font-semibold text-lg">Flip vs Hold Decision Framework</h3>
+                        <p class="text-gray-400 text-sm">Should you sell or keep this property?</p>
+                    </div>
+                </div>
+                <svg class="w-5 h-5 text-gray-400" id="arrow3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+            <div id="tool3" class="accordion-content">
+                <div class="px-6 py-6 border-t border-gray-700">
+                    <p class="text-gray-400 mb-6">Answer each question honestly. There's no right answer—only the right answer for your situation.</p>
+                    
+                    <div class="space-y-6">
+                        <!-- Question 1 -->
+                        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                            <p class="font-medium mb-3">1. How much time can you dedicate to this project?</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="radio" name="q1" class="w-4 h-4">
+                                    <span class="text-sm">I have significant time to manage a renovation (Favors Flip)</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="radio" name="q1" class="w-4 h-4">
+                                    <span class="text-sm">I prefer passive involvement (Favors Hold)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 2 -->
+                        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                            <p class="font-medium mb-3">2. What's the local market doing?</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="radio" name="q2" class="w-4 h-4">
+                                    <span class="text-sm">Rapidly appreciating (Favors Hold to capture gains)</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="radio" name="q2" class="w-4 h-4">
+                                    <span class="text-sm">Flat or uncertain (Favors Flip to exit quickly)</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="radio" name="q2" class="w-4 h-4">
+                                    <span class="text-sm">Declining (Strongly favors Flip)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 3 -->
+                        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                            <p class="font-medium mb-3">3. What's the property condition?</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="radio" name="q3" class="w-4 h-4">
+                                    <span class="text-sm">Needs major renovation (Favors Flip after forced appreciation)</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="radio" name="q3" class="w-4 h-4">
+                                    <span class="text-sm">Rent-ready with minor updates (Favors Hold)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 4 -->
+                        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                            <p class="font-medium mb-3">4. Do you need cash now or cash flow later?</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="radio" name="q4" class="w-4 h-4">
+                                    <span class="text-sm">I need capital for other opportunities (Favors Flip)</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="radio" name="q4" class="w-4 h-4">
+                                    <span class="text-sm">I want monthly income and long-term wealth (Favors Hold)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Question 5 -->
+                        <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                            <p class="font-medium mb-3">5. What are the tax implications?</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="radio" name="q5" class="w-4 h-4">
+                                    <span class="text-sm">I'm okay with short-term capital gains tax (Flip acceptable)</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="radio" name="q5" class="w-4 h-4">
+                                    <span class="text-sm">I want to minimize taxes through depreciation (Favors Hold)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-green-900 bg-opacity-30 rounded-lg border border-green-700">
+                        <p class="font-semibold text-green-300">Reflection:</p>
+                        <p class="text-gray-300 mt-2">Count your answers. More "Flip" responses? Consider selling. More "Hold"? Consider renting. Split? Dig deeper into the numbers and your personal goals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOOL 4: First Deal Roadmap -->
+        <div class="tool-card bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+            <button onclick="toggleAccordion('tool4')" class="w-full px-6 py-5 flex justify-between items-center hover:bg-gray-750">
+                <div class="flex items-center gap-4">
+                    <span class="bg-purple-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">4</span>
+                    <div class="text-left">
+                        <h3 class="font-semibold text-lg">First Deal Roadmap</h3>
+                        <p class="text-gray-400 text-sm">Track your progress toward your first investment</p>
+                    </div>
+                </div>
+                <svg class="w-5 h-5 text-gray-400" id="arrow4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+            <div id="tool4" class="accordion-content">
+                <div class="px-6 py-6 border-t border-gray-700">
+                    <p class="text-gray-400 mb-6">Check off each milestone as you complete it. Take your time—rushing leads to mistakes.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-blue-400 mb-3">Phase 1: Foundation (Weeks 1-4)</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Define investment criteria (property type, location, price range)</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Calculate available capital and reserves needed</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Get pre-qualified with 2-3 lenders</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Interview and select a real estate agent</label>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-green-400 mb-3">Phase 2: Deal Hunting (Weeks 5-12)</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Analyze at least 20 properties (practice makes perfect)</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Tour at least 5 properties in person</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Make at least 3 offers</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Get one offer accepted</label>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-yellow-500 pl-4">
+                            <h4 class="font-semibold text-yellow-400 mb-3">Phase 3: Due Diligence (2-4 weeks)</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Complete property inspection</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Review title report</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Finalize financing</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Get insurance quotes</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Negotiate repairs or price adjustments if needed</label>
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-semibold text-purple-400 mb-3">Phase 4: Close & Execute</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Final walkthrough completed</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Closing documents signed</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Keys received—YOU OWN IT!</label>
+                                <label class="flex items-center gap-3"><input type="checkbox" class="w-4 h-4"> Begin renovation or tenant placement</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOOL 5: Annotated Term Sheets -->
+        <div class="tool-card bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+            <button onclick="toggleAccordion('tool5')" class="w-full px-6 py-5 flex justify-between items-center hover:bg-gray-750">
+                <div class="flex items-center gap-4">
+                    <span class="bg-yellow-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">5</span>
+                    <div class="text-left">
+                        <h3 class="font-semibold text-lg">Term Sheet Examples: Good, OK, Predatory</h3>
+                        <p class="text-gray-400 text-sm">Learn to recognize what you're signing</p>
+                    </div>
+                </div>
+                <svg class="w-5 h-5 text-gray-400" id="arrow5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+            <div id="tool5" class="accordion-content">
+                <div class="px-6 py-6 border-t border-gray-700 space-y-6">
+                    
+                    <!-- Good Term Sheet -->
+                    <div class="rating-good rounded-lg p-4 border-2">
+                        <h4 class="font-bold text-green-300 text-lg mb-3">GOOD: Borrower-Friendly Terms</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between border-b border-green-800 pb-2">
+                                <span class="text-gray-300">Interest Rate</span>
+                                <span class="font-medium">10% annual, simple interest</span>
+                            </div>
+                            <div class="flex justify-between border-b border-green-800 pb-2">
+                                <span class="text-gray-300">Points</span>
+                                <span class="font-medium">1.5 points</span>
+                            </div>
+                            <div class="flex justify-between border-b border-green-800 pb-2">
+                                <span class="text-gray-300">LTV</span>
+                                <span class="font-medium">75% of ARV</span>
+                            </div>
+                            <div class="flex justify-between border-b border-green-800 pb-2">
+                                <span class="text-gray-300">Prepayment Penalty</span>
+                                <span class="font-medium text-green-400">None</span>
+                            </div>
+                            <div class="flex justify-between border-b border-green-800 pb-2">
+                                <span class="text-gray-300">Draw Funding</span>
+                                <span class="font-medium">24-48 hours after inspection</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-300">Extension</span>
+                                <span class="font-medium">3-month extension at 0.5 points</span>
+                            </div>
+                        </div>
+                        <p class="mt-3 text-green-200 text-sm">Why it's good: Low cost, flexibility, no traps</p>
+                    </div>
+                    
+                    <!-- OK Term Sheet -->
+                    <div class="rating-ok rounded-lg p-4 border-2">
+                        <h4 class="font-bold text-yellow-300 text-lg mb-3">OK: Negotiable Terms</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between border-b border-yellow-800 pb-2">
+                                <span class="text-gray-300">Interest Rate</span>
+                                <span class="font-medium">12% annual</span>
+                            </div>
+                            <div class="flex justify-between border-b border-yellow-800 pb-2">
+                                <span class="text-gray-300">Points</span>
+                                <span class="font-medium">2.5 points</span>
+                            </div>
+                            <div class="flex justify-between border-b border-yellow-800 pb-2">
+                                <span class="text-gray-300">LTV</span>
+                                <span class="font-medium">70% of ARV</span>
+                            </div>
+                            <div class="flex justify-between border-b border-yellow-800 pb-2">
+                                <span class="text-gray-300">Prepayment Penalty</span>
+                                <span class="font-medium text-yellow-400">3-month minimum interest</span>
+                            </div>
+                            <div class="flex justify-between border-b border-yellow-800 pb-2">
+                                <span class="text-gray-300">Draw Funding</span>
+                                <span class="font-medium">5-7 business days</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-300">Extension</span>
+                                <span class="font-medium">1 point per month</span>
+                            </div>
+                        </div>
+                        <p class="mt-3 text-yellow-200 text-sm">Why it's OK: Standard terms but negotiate the prepayment and draw speed</p>
+                    </div>
+                    
+                    <!-- Predatory Term Sheet -->
+                    <div class="rating-bad rounded-lg p-4 border-2">
+                        <h4 class="font-bold text-red-300 text-lg mb-3">PREDATORY: Walk Away</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between border-b border-red-800 pb-2">
+                                <span class="text-gray-300">Interest Rate</span>
+                                <span class="font-medium">15% annual, daily compounding</span>
+                            </div>
+                            <div class="flex justify-between border-b border-red-800 pb-2">
+                                <span class="text-gray-300">Points</span>
+                                <span class="font-medium">4 points + $2,500 "processing"</span>
+                            </div>
+                            <div class="flex justify-between border-b border-red-800 pb-2">
+                                <span class="text-gray-300">LTV</span>
+                                <span class="font-medium">65% of purchase price (not ARV)</span>
+                            </div>
+                            <div class="flex justify-between border-b border-red-800 pb-2">
+                                <span class="text-gray-300">Prepayment Penalty</span>
+                                <span class="font-medium text-red-400">6-month minimum + 2% penalty</span>
+                            </div>
+                            <div class="flex justify-between border-b border-red-800 pb-2">
+                                <span class="text-gray-300">Draw Funding</span>
+                                <span class="font-medium text-red-400">In arrears only, 10+ days</span>
+                            </div>
+                            <div class="flex justify-between border-b border-red-800 pb-2">
+                                <span class="text-gray-300">Cross-Collateral</span>
+                                <span class="font-medium text-red-400">Yes - all borrower assets</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-300">Default</span>
+                                <span class="font-medium text-red-400">Immediate foreclosure, no cure period</span>
+                            </div>
+                        </div>
+                        <p class="mt-3 text-red-200 text-sm">Why it's predatory: Hidden fees, traps, designed for borrower failure</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Back to Course -->
+    <div class="max-w-5xl mx-auto px-4 py-8 text-center">
+        <a href="course.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition">
+            Back to Course
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-400">
+            <p>&copy; 2024 REBWB - Real Estate Without Bullshit. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const arrow = document.getElementById('arrow' + id.replace('tool', ''));
+            content.classList.toggle('open');
+            if (arrow) {
+                arrow.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0)';
+            }
+        }
+        // Open first tool by default
+        document.addEventListener('DOMContentLoaded', () => {
+            toggleAccordion('tool1');
+        });
+    </script>
+</body>
+</html>

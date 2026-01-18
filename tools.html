@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools - REBWB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-xl font-bold text-white">REBWB</a>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-300 hover:text-white transition">Home</a>
+                    <a href="course.html" class="text-gray-300 hover:text-white transition">Course</a>
+                    <a href="dealpilot.html" class="text-gray-300 hover:text-white transition">DealPilot</a>
+                    <a href="templates.html" class="text-gray-300 hover:text-white transition">Templates</a>
+                    <a href="tools.html" class="text-white font-semibold">Tools</a>
+                    <a href="faq.html" class="text-gray-300 hover:text-white transition">FAQ</a>
+                    <a href="about.html" class="text-gray-300 hover:text-white transition">About</a>
+                    <button onclick="signOut()" class="text-gray-300 hover:text-white transition">Logout</button>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-800 border-t border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Home</a>
+                <a href="course.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Course</a>
+                <a href="dealpilot.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">DealPilot</a>
+                <a href="templates.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Templates</a>
+                <a href="tools.html" class="block px-3 py-2 text-white bg-gray-700 rounded">Tools</a>
+                <a href="faq.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">FAQ</a>
+                <a href="about.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">About</a>
+                <button onclick="signOut()" class="block w-full text-left px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Logout</button>
+            </div>
+        </div>
+    </nav>
+    <script src="js/auth.js"></script>
+    <script>requireAuth();</script>
+
+    <!-- Hero -->
+    <section class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Interactive Calculators</h1>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">Free web-based tools for analyzing deals and managing your properties. No spreadsheets required.</p>
+        </div>
+    </section>
+
+    <!-- Diagnostic Assessments Section -->
+    <section class="py-16 bg-gray-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-4 text-center">Investor Diagnostics</h2>
+            <p class="text-gray-400 text-center mb-12 max-w-3xl mx-auto">Understand where you are and where you're going with our investor assessment tools.</p>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- FREE Quick Investor Profile -->
+                <div class="bg-gray-900 rounded-lg border-2 border-blue-600 p-8">
+                    <div class="mb-4">
+                        <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">FREE</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Quick Investor Profile</h3>
+                    <p class="text-gray-400 mb-6">12 questions. 5 minutes. Instant results with personalized recommendations.</p>
+                    <ul class="space-y-2 mb-8">
+                        <li class="flex items-start gap-2 text-sm">
+                            <svg class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>5 investor profiles</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm">
+                            <svg class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Immediate action items</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm">
+                            <svg class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>No registration required</span>
+                        </li>
+                    </ul>
+                    <button onclick="startQuickDiagnostic()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
+                        Start Free Assessment
+                    </button>
+                </div>
+
+                <!-- PREMIUM Comprehensive Assessment -->
+                <div class="bg-gray-900 rounded-lg border-2 border-purple-600 p-8 relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                        PREMIUM
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Comprehensive Portfolio Assessment</h3>
+                    <div class="text-3xl font-bold text-purple-400 mb-4">$47</div>
+                    <p class="text-gray-400 mb-6">35 in-depth questions. Full portfolio analysis with downloadable report.</p>
+                    <ul class="space-y-2 mb-8">
+                        <li class="flex items-start gap-2 text-sm">
+                            <svg class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>7-dimension analysis</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm">
+                            <svg class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Visual radar chart & risk matrix</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm">
+                            <svg class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Downloadable PDF report</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm">
+                            <svg class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>30/90/365-day action plan</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm text-purple-400">
+                            <svg class="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span><strong>FREE with course purchase</strong></span>
+                        </li>
+                    </ul>
+                    <button onclick="startPremiumDiagnostic()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold transition">
+                        Preview Assessment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="py-16 bg-gray-900">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-12 text-center">Financial Calculators</h2>
+            
+            <!-- DealPilot Featured Card -->
+            <a href="dealpilot.html" class="block bg-gradient-to-r from-orange-600 to-red-600 rounded-lg p-6 md:p-8 mb-8 hover:from-orange-500 hover:to-red-500 transition-all transform hover:scale-[1.01] border-2 border-orange-500">
+                <div class="flex items-center gap-4">
+                    <div class="bg-white/20 p-3 rounded-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-bold text-white mb-1">DealPilot - Go/No-Go Deal Analyzer</h3>
+                        <p class="text-orange-100">Conservative underwriting tool that forces your deals to survive reality.</p>
+                    </div>
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Cash Flow Calculator -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 md:p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="bg-blue-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </span>
+                    Cash Flow Calculator
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Monthly Rent</label>
+                            <input type="number" id="cf-rent" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="2000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Mortgage Payment</label>
+                            <input type="number" id="cf-mortgage" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="1200">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Property Tax (Monthly)</label>
+                            <input type="number" id="cf-tax" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="200">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Insurance (Monthly)</label>
+                            <input type="number" id="cf-insurance" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="100">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Maintenance (Monthly)</label>
+                            <input type="number" id="cf-maintenance" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="150">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Other Expenses (Monthly)</label>
+                            <input type="number" id="cf-other" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="50">
+                        </div>
+                        <button onclick="calculateCashFlow()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition">
+                            Calculate
+                        </button>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+                        <h3 class="font-semibold mb-4">Results</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Monthly Income:</span>
+                                <span class="font-semibold" id="cf-income">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Total Expenses:</span>
+                                <span class="font-semibold" id="cf-expenses">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2">
+                                <span class="font-semibold">Monthly Cash Flow:</span>
+                                <span class="font-bold text-xl" id="cf-result">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-t border-gray-700 pt-3">
+                                <span class="font-semibold">Annual Cash Flow:</span>
+                                <span class="font-bold text-xl text-green-400" id="cf-annual">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROI Calculator -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 md:p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="bg-green-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                    </span>
+                    ROI Calculator
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Purchase Price</label>
+                            <input type="number" id="roi-price" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="250000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Down Payment (%)</label>
+                            <input type="number" id="roi-down" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="20">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Closing Costs</label>
+                            <input type="number" id="roi-closing" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="5000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Renovation Costs</label>
+                            <input type="number" id="roi-reno" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="10000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Annual Net Income</label>
+                            <input type="number" id="roi-income" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="6000">
+                        </div>
+                        <button onclick="calculateROI()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition">
+                            Calculate
+                        </button>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+                        <h3 class="font-semibold mb-4">Results</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Total Investment:</span>
+                                <span class="font-semibold" id="roi-investment">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Annual Net Income:</span>
+                                <span class="font-semibold" id="roi-net">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2">
+                                <span class="font-semibold">Cash-on-Cash ROI:</span>
+                                <span class="font-bold text-xl text-green-400" id="roi-result">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mortgage Calculator -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 md:p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="bg-purple-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                    </span>
+                    Mortgage Calculator
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Loan Amount</label>
+                            <input type="number" id="mort-amount" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="200000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Interest Rate (%)</label>
+                            <input type="number" step="0.01" id="mort-rate" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="6.5">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Loan Term (Years)</label>
+                            <input type="number" id="mort-years" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="30">
+                        </div>
+                        <button onclick="calculateMortgage()" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold transition">
+                            Calculate
+                        </button>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+                        <h3 class="font-semibold mb-4">Results</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Monthly Payment:</span>
+                                <span class="font-bold text-xl text-purple-400" id="mort-payment">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Total Paid:</span>
+                                <span class="font-semibold" id="mort-total">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2">
+                                <span class="text-gray-400">Total Interest:</span>
+                                <span class="font-semibold" id="mort-interest">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cap Rate Calculator -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 md:p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="bg-yellow-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </span>
+                    Cap Rate Calculator
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Purchase Price</label>
+                            <input type="number" id="cap-price" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="300000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Annual Gross Income</label>
+                            <input type="number" id="cap-income" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="36000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Annual Operating Expenses</label>
+                            <input type="number" id="cap-expenses" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="12000">
+                        </div>
+                        <button onclick="calculateCapRate()" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-3 rounded-lg font-semibold transition">
+                            Calculate
+                        </button>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+                        <h3 class="font-semibold mb-4">Results</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Net Operating Income:</span>
+                                <span class="font-semibold" id="cap-noi">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2">
+                                <span class="font-semibold">Cap Rate:</span>
+                                <span class="font-bold text-xl text-yellow-400" id="cap-result">0%</span>
+                            </div>
+                            <div class="mt-4 p-3 bg-gray-800 rounded border border-gray-600">
+                                <p class="text-sm text-gray-400">A good cap rate typically ranges from 4-10% depending on the market and property type.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rent vs Buy Calculator -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 md:p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="bg-red-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/>
+                        </svg>
+                    </span>
+                    Rent vs Buy Calculator
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Monthly Rent</label>
+                            <input type="number" id="rvb-rent" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="1500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Home Price</label>
+                            <input type="number" id="rvb-price" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="300000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Down Payment (%)</label>
+                            <input type="number" id="rvb-down" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="20">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Interest Rate (%)</label>
+                            <input type="number" step="0.01" id="rvb-rate" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="6.5">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Years to Stay</label>
+                            <input type="number" id="rvb-years" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="5">
+                        </div>
+                        <button onclick="calculateRentVsBuy()" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition">
+                            Calculate
+                        </button>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+                        <h3 class="font-semibold mb-4">Results</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Total Renting Cost:</span>
+                                <span class="font-semibold" id="rvb-rent-total">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Total Buying Cost:</span>
+                                <span class="font-semibold" id="rvb-buy-total">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2">
+                                <span class="font-semibold">Difference:</span>
+                                <span class="font-bold text-xl" id="rvb-diff">$0</span>
+                            </div>
+                            <div class="mt-4 p-3 bg-gray-800 rounded border border-gray-600">
+                                <p class="text-sm" id="rvb-recommendation">Enter values to see recommendation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vacancy Rate Calculator -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 md:p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="bg-indigo-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </span>
+                    Vacancy Rate Calculator
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Monthly Rent</label>
+                            <input type="number" id="vac-rent" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="2000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Expected Vacancy Rate (%)</label>
+                            <input type="number" id="vac-rate" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="5">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Average Days Between Tenants</label>
+                            <input type="number" id="vac-days" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="15">
+                        </div>
+                        <button onclick="calculateVacancy()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold transition">
+                            Calculate
+                        </button>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+                        <h3 class="font-semibold mb-4">Results</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Annual Vacancy Loss:</span>
+                                <span class="font-semibold" id="vac-loss">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Turnover Cost:</span>
+                                <span class="font-semibold" id="vac-turnover">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2">
+                                <span class="font-semibold">Effective Annual Income:</span>
+                                <span class="font-bold text-xl text-indigo-400" id="vac-effective">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 50% Rule Calculator -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 md:p-8 mb-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="bg-pink-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </span>
+                    50% Rule Quick Estimator
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Monthly Gross Rent</label>
+                            <input type="number" id="rule50-rent" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="2500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Monthly Mortgage Payment</label>
+                            <input type="number" id="rule50-mortgage" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="1400">
+                        </div>
+                        <button onclick="calculate50Rule()" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg font-semibold transition">
+                            Calculate
+                        </button>
+                        <div class="p-4 bg-gray-900 rounded border border-gray-600">
+                            <p class="text-sm text-gray-400">The 50% Rule estimates that operating expenses will be about 50% of gross rent. This is a quick screening tool, not a substitute for detailed analysis.</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+                        <h3 class="font-semibold mb-4">Results</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Monthly Gross Rent:</span>
+                                <span class="font-semibold" id="rule50-gross">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Estimated Expenses (50%):</span>
+                                <span class="font-semibold" id="rule50-expenses">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Mortgage Payment:</span>
+                                <span class="font-semibold" id="rule50-mort">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2">
+                                <span class="font-semibold">Estimated Cash Flow:</span>
+                                <span class="font-bold text-xl" id="rule50-result">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1% Rule Calculator -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="bg-cyan-600 p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </span>
+                    1% Rule Checker
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Purchase Price</label>
+                            <input type="number" id="rule1-price" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="250000">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Monthly Rent</label>
+                            <input type="number" id="rule1-rent" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 focus:border-blue-500 focus:outline-none" placeholder="2500">
+                        </div>
+                        <button onclick="calculate1Rule()" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-3 rounded-lg font-semibold transition">
+                            Calculate
+                        </button>
+                        <div class="p-4 bg-gray-900 rounded border border-gray-600">
+                            <p class="text-sm text-gray-400">The 1% Rule suggests monthly rent should be at least 1% of the purchase price. This is a quick screening metric to identify potentially good deals.</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 rounded-lg p-6 border border-gray-700">
+                        <h3 class="font-semibold mb-4">Results</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Purchase Price:</span>
+                                <span class="font-semibold" id="rule1-price-display">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Monthly Rent:</span>
+                                <span class="font-semibold" id="rule1-rent-display">$0</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-700">
+                                <span class="text-gray-400">Rent as % of Price:</span>
+                                <span class="font-bold text-xl" id="rule1-percentage">0%</span>
+                            </div>
+                            <div class="mt-4 p-3 rounded" id="rule1-result-box">
+                                <p class="font-semibold" id="rule1-result">Enter values to check</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 REBWB - Real Estate Without Bullshit. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/calculators.js"></script>
+    <script src="js/diagnostics.js"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Downloads - REBWB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-xl font-bold text-white">REBWB</a>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-300 hover:text-white transition">Home</a>
+                    <a href="course.html" class="text-gray-300 hover:text-white transition">Course</a>
+                    <a href="dealpilot.html" class="text-gray-300 hover:text-white transition">DealPilot</a>
+                    <a href="templates.html" class="text-gray-300 hover:text-white transition">Templates</a>
+                    <a href="my-downloads.html" class="text-white font-semibold">My Downloads</a>
+                    <button onclick="signOut()" class="text-gray-300 hover:text-white transition">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script src="js/auth.js"></script>
+    <script>requireAuth();</script>
+
+    <!-- Content -->
+    <section class="py-12 bg-gray-900 min-h-screen">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-bold mb-2">My Downloads</h1>
+            <p class="text-gray-400 mb-8">Access your purchased materials</p>
+
+            <div id="loading" class="text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                <p class="text-gray-400 mt-4">Loading your purchases...</p>
+            </div>
+
+            <div id="no-purchases" class="hidden text-center py-12">
+                <svg class="w-16 h-16 mx-auto text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+                </svg>
+                <h2 class="text-xl font-bold mb-2">No Purchases Yet</h2>
+                <p class="text-gray-400 mb-6">You haven't purchased any materials yet.</p>
+                <a href="index.html#pricing" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                    View Available Plans
+                </a>
+            </div>
+
+            <div id="downloads" class="hidden space-y-6">
+                <!-- Book Download -->
+                <div id="book-download" class="hidden bg-gray-800 rounded-lg border border-gray-700 p-6">
+                    <div class="flex items-start gap-4">
+                        <img src="images/book-cover.png" alt="REBWB Book" class="w-24 rounded shadow">
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold mb-1">Real Estate Without Bullshit - The Book</h3>
+                            <p class="text-gray-400 text-sm mb-4">Complete guide to conservative real estate investing</p>
+                            <p class="text-xs text-gray-500 mb-4">Purchased: <span id="book-date">-</span></p>
+                            <a href="REBWB_Book_Final.pdf" download class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                </svg>
+                                Download PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workbook Download -->
+                <div id="workbook-download" class="hidden bg-gray-800 rounded-lg border border-gray-700 p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-24 h-32 bg-gray-700 rounded flex items-center justify-center">
+                            <svg class="w-12 h-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold mb-1">REBWB Workbook</h3>
+                            <p class="text-gray-400 text-sm mb-4">Interactive exercises and frameworks</p>
+                            <p class="text-xs text-gray-500 mb-4">Purchased: <span id="workbook-date">-</span></p>
+                            <a href="REBWB_Workbook_Final.pdf" download class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                </svg>
+                                Download PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cliff Notes (Free) -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 p-6">
+                    <div class="flex items-start gap-4">
+                        <img src="imgs/cliff-notes-cover.png" alt="Cliff Notes" class="w-24 rounded shadow" onerror="this.style.display='none'">
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold mb-1">REBWB Cliff Notes</h3>
+                            <p class="text-gray-400 text-sm mb-4">Free summary of the core framework</p>
+                            <div class="flex gap-3">
+                                <a href="cliff-notes.html" class="inline-flex items-center gap-2 border border-gray-600 hover:border-white text-gray-300 hover:text-white font-semibold px-4 py-2 rounded transition">
+                                    Read Online
+                                </a>
+                                <a href="REBWB_Cliff_Notes.pdf" download class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded transition">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                    </svg>
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Templates (included with purchase) -->
+                <div id="templates-download" class="hidden bg-gray-800 rounded-lg border border-gray-700 p-6">
+                    <h3 class="text-xl font-bold mb-4">Spreadsheet Templates</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <a href="spreadsheets/REBWB_Deal_Analyzer.xlsx" download class="flex items-center gap-3 p-3 bg-gray-900 rounded border border-gray-700 hover:border-blue-500 transition">
+                            <svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+                            <span>Deal Analyzer</span>
+                        </a>
+                        <a href="spreadsheets/REBWB_Rental_Calculator.xlsx" download class="flex items-center gap-3 p-3 bg-gray-900 rounded border border-gray-700 hover:border-blue-500 transition">
+                            <svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+                            <span>Rental Calculator</span>
+                        </a>
+                        <a href="spreadsheets/REBWB_Expense_Tracker.xlsx" download class="flex items-center gap-3 p-3 bg-gray-900 rounded border border-gray-700 hover:border-blue-500 transition">
+                            <svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+                            <span>Expense Tracker</span>
+                        </a>
+                        <a href="spreadsheets/REBWB_Market_Analysis.xlsx" download class="flex items-center gap-3 p-3 bg-gray-900 rounded border border-gray-700 hover:border-blue-500 transition">
+                            <svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+                            <span>Market Analysis</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="font-bold text-white mb-1">REBWB</p>
+            <p class="text-sm text-gray-400">Real Estate Without Bullshit</p>
+        </div>
+    </footer>
+
+    <script>
+        const SUPABASE_URL = 'https://nzutywxvzcrjopvyayml.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56dXR5d3h2emNyam9wdnlheW1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg2MzIzMTEsImV4cCI6MjA4NDIwODMxMX0.C4UdwnQEebRwUrdbiNeQN2Wl4nQFeCLVAmzhDI8LKWI';
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function loadPurchases() {
+            const { data: { user } } = await sb.auth.getUser();
+            if (!user) return;
+
+            // Check subscriptions table for purchases
+            const { data: subs } = await sb.from('rebwb_subscriptions')
+                .select('*')
+                .eq('user_id', user.id)
+                .eq('status', 'active');
+
+            document.getElementById('loading').classList.add('hidden');
+
+            if (!subs || subs.length === 0) {
+                document.getElementById('no-purchases').classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('downloads').classList.remove('hidden');
+
+            subs.forEach(sub => {
+                const date = new Date(sub.created_at).toLocaleDateString();
+                
+                if (sub.plan_type === 'reality-check' || sub.plan_type === 'operators-path') {
+                    document.getElementById('book-download').classList.remove('hidden');
+                    document.getElementById('workbook-download').classList.remove('hidden');
+                    document.getElementById('templates-download').classList.remove('hidden');
+                    document.getElementById('book-date').textContent = date;
+                    document.getElementById('workbook-date').textContent = date;
+                }
+            });
+        }
+
+        loadPurchases();
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Deal Analyzer - REBWB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        @media print {
+            nav, footer, .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .print-section { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="text-xl font-bold text-white">REBWB</a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-300 hover:text-white transition">Home</a>
+                    <a href="course.html" class="text-gray-300 hover:text-white transition">Course</a>
+                    <a href="dealpilot.html" class="text-gray-300 hover:text-white transition">DealPilot</a>
+                    <a href="advanced-analyzer.html" class="text-white font-semibold">Advanced Analyzer</a>
+                    <button onclick="signOut()" class="text-gray-300 hover:text-white transition">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script src="js/auth.js"></script>
+    <script>requireAuth();</script>
+
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-8 no-print">
+            <div>
+                <h1 class="text-3xl font-bold">Advanced Deal Analyzer</h1>
+                <p class="text-gray-400">Professional underwriting with sensitivity analysis and projections</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="printReport()" class="px-4 py-2 border border-gray-600 text-gray-300 rounded hover:bg-gray-700 transition">Print Report</button>
+                <button onclick="saveAnalysis()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Save Analysis</button>
+            </div>
+        </div>
+
+        <!-- Property Search -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-6 no-print">
+            <h2 class="text-xl font-bold mb-4">Property Search</h2>
+            <div class="flex gap-4 mb-4">
+                <input type="text" id="searchZip" placeholder="Enter ZIP code" class="flex-1 bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white">
+                <select id="searchStatus" class="bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white">
+                    <option value="for_sale">For Sale</option>
+                    <option value="sold">Recently Sold</option>
+                    <option value="for_rent">For Rent</option>
+                </select>
+                <button onclick="searchProperties()" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Search</button>
+            </div>
+            <div id="searchResults" class="hidden">
+                <div id="searchLoading" class="text-center py-4 hidden">
+                    <div class="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                </div>
+                <div id="propertiesGrid" class="grid md:grid-cols-3 gap-4"></div>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-6">
+            <!-- Input Panel -->
+            <div class="lg:col-span-1 space-y-6 no-print">
+                <!-- Deal Info -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 p-5">
+                    <h3 class="font-bold mb-4">Deal Information</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-1">Deal Name</label>
+                            <input type="text" id="dealName" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="Sample Property">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Purchase Price</label>
+                                <input type="number" id="price" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="300000">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Square Feet</label>
+                                <input type="number" id="sqft" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="1500">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Units</label>
+                                <input type="number" id="units" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="1">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Closing Costs</label>
+                                <input type="number" id="closing" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="6000">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financing -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 p-5">
+                    <h3 class="font-bold mb-4">Financing</h3>
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Down Payment %</label>
+                                <input type="number" id="downPct" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="20">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Interest Rate %</label>
+                                <input type="number" id="rate" step="0.1" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="7.0">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-1">Loan Term</label>
+                            <select id="term" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm">
+                                <option value="30">30 Years</option>
+                                <option value="15">15 Years</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Income -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 p-5">
+                    <h3 class="font-bold mb-4">Income</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-1">Monthly Rent</label>
+                            <input type="number" id="rent" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="2200">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-1">Other Income</label>
+                            <input type="number" id="otherIncome" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expenses -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 p-5">
+                    <h3 class="font-bold mb-4">Operating Expenses</h3>
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Taxes (annual)</label>
+                                <input type="number" id="taxes" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="3600">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Insurance (annual)</label>
+                                <input type="number" id="insurance" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="1800">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Vacancy %</label>
+                                <input type="number" id="vacancy" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="8">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Management %</label>
+                                <input type="number" id="mgmt" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="10">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">Maintenance %</label>
+                                <input type="number" id="maint" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="5">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-400 mb-1">CapEx %</label>
+                                <input type="number" id="capex" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projections -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 p-5">
+                    <h3 class="font-bold mb-4">Growth Assumptions</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-1">Rent Growth %/yr</label>
+                            <input type="number" id="rentGrowth" step="0.5" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="3">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-1">Appreciation %/yr</label>
+                            <input type="number" id="appreciation" step="0.5" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white text-sm" value="3">
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="calculate()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded transition">
+                    Calculate Analysis
+                </button>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Key Metrics -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 print-section">
+                    <h2 class="text-xl font-bold mb-4">Key Metrics</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-gray-900 p-4 rounded text-center">
+                            <p class="text-sm text-gray-400">Monthly Cash Flow</p>
+                            <p id="resCashFlow" class="text-2xl font-bold text-green-400">$0</p>
+                        </div>
+                        <div class="bg-gray-900 p-4 rounded text-center">
+                            <p class="text-sm text-gray-400">Cash-on-Cash</p>
+                            <p id="resCOC" class="text-2xl font-bold">0%</p>
+                        </div>
+                        <div class="bg-gray-900 p-4 rounded text-center">
+                            <p class="text-sm text-gray-400">Cap Rate</p>
+                            <p id="resCapRate" class="text-2xl font-bold">0%</p>
+                        </div>
+                        <div class="bg-gray-900 p-4 rounded text-center">
+                            <p class="text-sm text-gray-400">DSCR</p>
+                            <p id="resDSCR" class="text-2xl font-bold">0.00</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                        <div class="bg-gray-900 p-4 rounded text-center">
+                            <p class="text-sm text-gray-400">GRM</p>
+                            <p id="resGRM" class="text-2xl font-bold">0.0</p>
+                        </div>
+                        <div class="bg-gray-900 p-4 rounded text-center">
+                            <p class="text-sm text-gray-400">Price/SqFt</p>
+                            <p id="resPriceSqft" class="text-2xl font-bold">$0</p>
+                        </div>
+                        <div class="bg-gray-900 p-4 rounded text-center">
+                            <p class="text-sm text-gray-400">Price/Unit</p>
+                            <p id="resPriceUnit" class="text-2xl font-bold">$0</p>
+                        </div>
+                        <div class="bg-gray-900 p-4 rounded text-center">
+                            <p class="text-sm text-gray-400">Break-Even Occ.</p>
+                            <p id="resBreakEven" class="text-2xl font-bold">0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sensitivity Analysis -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 print-section">
+                    <h2 class="text-xl font-bold mb-4">Sensitivity Analysis</h2>
+                    <p class="text-sm text-gray-400 mb-4">How cash flow changes with rent/expense variations</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-700">
+                                    <th class="py-2 text-left text-gray-400">Scenario</th>
+                                    <th class="py-2 text-right text-gray-400">Rent</th>
+                                    <th class="py-2 text-right text-gray-400">Monthly CF</th>
+                                    <th class="py-2 text-right text-gray-400">Annual CF</th>
+                                    <th class="py-2 text-right text-gray-400">CoC</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sensitivityTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 5-Year Projection -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 print-section">
+                    <h2 class="text-xl font-bold mb-4">5-Year Projection</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-700">
+                                    <th class="py-2 text-left text-gray-400">Year</th>
+                                    <th class="py-2 text-right text-gray-400">Rent</th>
+                                    <th class="py-2 text-right text-gray-400">Cash Flow</th>
+                                    <th class="py-2 text-right text-gray-400">Property Value</th>
+                                    <th class="py-2 text-right text-gray-400">Equity</th>
+                                    <th class="py-2 text-right text-gray-400">Total ROI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projectionTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Scenario Comparison -->
+                <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 print-section">
+                    <h2 class="text-xl font-bold mb-4">Scenario Comparison</h2>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="bg-red-900/20 border border-red-700 rounded p-4">
+                            <h4 class="font-bold text-red-400 mb-3">Pessimistic</h4>
+                            <p class="text-xs text-gray-400 mb-2">-20% rent, +20% expenses</p>
+                            <p class="text-sm">Cash Flow: <span id="scenPessCF" class="font-bold">$0</span></p>
+                            <p class="text-sm">CoC: <span id="scenPessCOC" class="font-bold">0%</span></p>
+                        </div>
+                        <div class="bg-yellow-900/20 border border-yellow-700 rounded p-4">
+                            <h4 class="font-bold text-yellow-400 mb-3">Realistic</h4>
+                            <p class="text-xs text-gray-400 mb-2">Base case numbers</p>
+                            <p class="text-sm">Cash Flow: <span id="scenRealCF" class="font-bold">$0</span></p>
+                            <p class="text-sm">CoC: <span id="scenRealCOC" class="font-bold">0%</span></p>
+                        </div>
+                        <div class="bg-green-900/20 border border-green-700 rounded p-4">
+                            <h4 class="font-bold text-green-400 mb-3">Optimistic</h4>
+                            <p class="text-xs text-gray-400 mb-2">+10% rent, -10% expenses</p>
+                            <p class="text-sm">Cash Flow: <span id="scenOptCF" class="font-bold">$0</span></p>
+                            <p class="text-sm">CoC: <span id="scenOptCOC" class="font-bold">0%</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 border-t border-gray-700 py-8 no-print">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-bold text-white mb-1">REBWB</p>
+            <p class="text-sm text-gray-400">Real Estate Without Bullshit</p>
+        </div>
+    </footer>
+
+    <script>
+        const SUPABASE_URL = 'https://nzutywxvzcrjopvyayml.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56dXR5d3h2emNyam9wdnlheW1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg2MzIzMTEsImV4cCI6MjA4NDIwODMxMX0.C4UdwnQEebRwUrdbiNeQN2Wl4nQFeCLVAmzhDI8LKWI';
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        function getInputs() {
+            return {
+                dealName: document.getElementById('dealName').value,
+                price: parseFloat(document.getElementById('price').value) || 0,
+                sqft: parseFloat(document.getElementById('sqft').value) || 1,
+                units: parseFloat(document.getElementById('units').value) || 1,
+                closing: parseFloat(document.getElementById('closing').value) || 0,
+                downPct: parseFloat(document.getElementById('downPct').value) || 20,
+                rate: parseFloat(document.getElementById('rate').value) || 7,
+                term: parseInt(document.getElementById('term').value) || 30,
+                rent: parseFloat(document.getElementById('rent').value) || 0,
+                otherIncome: parseFloat(document.getElementById('otherIncome').value) || 0,
+                taxes: parseFloat(document.getElementById('taxes').value) || 0,
+                insurance: parseFloat(document.getElementById('insurance').value) || 0,
+                vacancy: parseFloat(document.getElementById('vacancy').value) || 8,
+                mgmt: parseFloat(document.getElementById('mgmt').value) || 10,
+                maint: parseFloat(document.getElementById('maint').value) || 5,
+                capex: parseFloat(document.getElementById('capex').value) || 5,
+                rentGrowth: parseFloat(document.getElementById('rentGrowth').value) || 3,
+                appreciation: parseFloat(document.getElementById('appreciation').value) || 3
+            };
+        }
+
+        function calcMortgage(principal, rate, years) {
+            const r = rate / 100 / 12;
+            const n = years * 12;
+            return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+        }
+
+        function calcDeal(inputs, rentMod = 1, expMod = 1) {
+            const loanAmt = inputs.price * (1 - inputs.downPct / 100);
+            const monthlyPI = calcMortgage(loanAmt, inputs.rate, inputs.term);
+            const grossRent = (inputs.rent * rentMod + inputs.otherIncome) * 12;
+            const effectiveRent = grossRent * (1 - inputs.vacancy / 100);
+            const opexPct = (inputs.mgmt + inputs.maint + inputs.capex) / 100 * expMod;
+            const opex = effectiveRent * opexPct + (inputs.taxes + inputs.insurance) * expMod;
+            const noi = effectiveRent - opex;
+            const annualDebt = monthlyPI * 12;
+            const cashFlow = noi - annualDebt;
+            const totalCash = inputs.price * inputs.downPct / 100 + inputs.closing;
+            const coc = totalCash > 0 ? (cashFlow / totalCash) * 100 : 0;
+            const capRate = inputs.price > 0 ? (noi / inputs.price) * 100 : 0;
+            const dscr = annualDebt > 0 ? noi / annualDebt : 0;
+            const grm = grossRent > 0 ? inputs.price / grossRent : 0;
+            const breakEven = grossRent > 0 ? ((opex + annualDebt) / grossRent) * 100 : 0;
+
+            return { loanAmt, monthlyPI, grossRent, noi, cashFlow, totalCash, coc, capRate, dscr, grm, breakEven };
+        }
+
+        function calculate() {
+            const inputs = getInputs();
+            const base = calcDeal(inputs);
+
+            // Key Metrics
+            document.getElementById('resCashFlow').textContent = '$' + Math.round(base.cashFlow / 12).toLocaleString();
+            document.getElementById('resCashFlow').className = 'text-2xl font-bold ' + (base.cashFlow >= 0 ? 'text-green-400' : 'text-red-400');
+            document.getElementById('resCOC').textContent = base.coc.toFixed(1) + '%';
+            document.getElementById('resCOC').className = 'text-2xl font-bold ' + (base.coc >= 8 ? 'text-green-400' : base.coc >= 5 ? 'text-yellow-400' : 'text-red-400');
+            document.getElementById('resCapRate').textContent = base.capRate.toFixed(1) + '%';
+            document.getElementById('resDSCR').textContent = base.dscr.toFixed(2);
+            document.getElementById('resDSCR').className = 'text-2xl font-bold ' + (base.dscr >= 1.25 ? 'text-green-400' : 'text-red-400');
+            document.getElementById('resGRM').textContent = base.grm.toFixed(1);
+            document.getElementById('resPriceSqft').textContent = '$' + Math.round(inputs.price / inputs.sqft).toLocaleString();
+            document.getElementById('resPriceUnit').textContent = '$' + Math.round(inputs.price / inputs.units).toLocaleString();
+            document.getElementById('resBreakEven').textContent = base.breakEven.toFixed(0) + '%';
+
+            // Sensitivity Analysis
+            const sensScenarios = [
+                { label: 'Rent -20%', rentMod: 0.8, expMod: 1 },
+                { label: 'Rent -10%', rentMod: 0.9, expMod: 1 },
+                { label: 'Base Case', rentMod: 1, expMod: 1 },
+                { label: 'Rent +10%', rentMod: 1.1, expMod: 1 },
+                { label: 'Rent +20%', rentMod: 1.2, expMod: 1 }
+            ];
+            let sensHTML = '';
+            sensScenarios.forEach(s => {
+                const r = calcDeal(inputs, s.rentMod, s.expMod);
+                const cfClass = r.cashFlow >= 0 ? 'text-green-400' : 'text-red-400';
+                sensHTML += `<tr class="border-b border-gray-700">
+                    <td class="py-2">${s.label}</td>
+                    <td class="py-2 text-right">$${Math.round(inputs.rent * s.rentMod).toLocaleString()}</td>
+                    <td class="py-2 text-right ${cfClass}">$${Math.round(r.cashFlow / 12).toLocaleString()}</td>
+                    <td class="py-2 text-right ${cfClass}">$${Math.round(r.cashFlow).toLocaleString()}</td>
+                    <td class="py-2 text-right">${r.coc.toFixed(1)}%</td>
+                </tr>`;
+            });
+            document.getElementById('sensitivityTable').innerHTML = sensHTML;
+
+            // 5-Year Projection
+            let projHTML = '';
+            let cumCF = 0;
+            let loanBalance = base.loanAmt;
+            for (let yr = 1; yr <= 5; yr++) {
+                const futureRent = inputs.rent * Math.pow(1 + inputs.rentGrowth / 100, yr - 1);
+                const futureVal = inputs.price * Math.pow(1 + inputs.appreciation / 100, yr);
+                const yearInputs = { ...inputs, rent: futureRent };
+                const yearCalc = calcDeal(yearInputs);
+                cumCF += yearCalc.cashFlow;
+                // Simplified principal paydown
+                const annualPrincipal = base.monthlyPI * 12 - base.loanAmt * (inputs.rate / 100);
+                loanBalance -= annualPrincipal > 0 ? annualPrincipal : 0;
+                const equity = futureVal - Math.max(loanBalance, 0);
+                const totalReturn = cumCF + (equity - base.totalCash);
+                const roi = base.totalCash > 0 ? (totalReturn / base.totalCash) * 100 : 0;
+                projHTML += `<tr class="border-b border-gray-700">
+                    <td class="py-2">Year ${yr}</td>
+                    <td class="py-2 text-right">$${Math.round(futureRent).toLocaleString()}</td>
+                    <td class="py-2 text-right ${yearCalc.cashFlow >= 0 ? 'text-green-400' : 'text-red-400'}">$${Math.round(yearCalc.cashFlow).toLocaleString()}</td>
+                    <td class="py-2 text-right">$${Math.round(futureVal).toLocaleString()}</td>
+                    <td class="py-2 text-right">$${Math.round(equity).toLocaleString()}</td>
+                    <td class="py-2 text-right">${roi.toFixed(0)}%</td>
+                </tr>`;
+            }
+            document.getElementById('projectionTable').innerHTML = projHTML;
+
+            // Scenario Comparison
+            const pess = calcDeal(inputs, 0.8, 1.2);
+            const opt = calcDeal(inputs, 1.1, 0.9);
+            document.getElementById('scenPessCF').textContent = '$' + Math.round(pess.cashFlow / 12).toLocaleString();
+            document.getElementById('scenPessCOC').textContent = pess.coc.toFixed(1) + '%';
+            document.getElementById('scenRealCF').textContent = '$' + Math.round(base.cashFlow / 12).toLocaleString();
+            document.getElementById('scenRealCOC').textContent = base.coc.toFixed(1) + '%';
+            document.getElementById('scenOptCF').textContent = '$' + Math.round(opt.cashFlow / 12).toLocaleString();
+            document.getElementById('scenOptCOC').textContent = opt.coc.toFixed(1) + '%';
+        }
+
+        async function searchProperties() {
+            const zip = document.getElementById('searchZip').value;
+            if (!zip) { alert('Please enter a ZIP code'); return; }
+
+            document.getElementById('searchResults').classList.remove('hidden');
+            document.getElementById('searchLoading').classList.remove('hidden');
+            document.getElementById('propertiesGrid').innerHTML = '';
+
+            try {
+                const res = await fetch(SUPABASE_URL + '/functions/v1/property-search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        postal_code: zip,
+                        status: [document.getElementById('searchStatus').value],
+                        limit: 12
+                    })
+                });
+                const json = await res.json();
+                document.getElementById('searchLoading').classList.add('hidden');
+
+                if (json.data?.data?.home_search?.results) {
+                    const props = json.data.data.home_search.results;
+                    if (props.length === 0) {
+                        document.getElementById('propertiesGrid').innerHTML = '<p class="text-gray-400 col-span-3">No properties found in this ZIP code.</p>';
+                        return;
+                    }
+                    let html = '';
+                    props.forEach(p => {
+                        const loc = p.location || {};
+                        const addr = loc.address?.line || 'Address unavailable';
+                        const price = p.list_price || p.sold_price || 0;
+                        const beds = p.description?.beds || '-';
+                        const baths = p.description?.baths || '-';
+                        const sqft = p.description?.sqft || '-';
+                        html += `<div class="bg-gray-900 border border-gray-700 rounded p-4 cursor-pointer hover:border-blue-500 transition" onclick="useProperty(${price}, ${sqft === '-' ? 1500 : sqft})">
+                            <p class="font-bold text-sm mb-1 truncate">${addr}</p>
+                            <p class="text-blue-400 font-bold">$${price.toLocaleString()}</p>
+                            <p class="text-xs text-gray-400">${beds} bed | ${baths} bath | ${sqft} sqft</p>
+                            <p class="text-xs text-gray-500 mt-1">Click to analyze</p>
+                        </div>`;
+                    });
+                    document.getElementById('propertiesGrid').innerHTML = html;
+                } else {
+                    document.getElementById('propertiesGrid').innerHTML = '<p class="text-gray-400 col-span-3">No results found.</p>';
+                }
+            } catch (e) {
+                document.getElementById('searchLoading').classList.add('hidden');
+                document.getElementById('propertiesGrid').innerHTML = '<p class="text-red-400 col-span-3">Error searching properties. Please try again.</p>';
+            }
+        }
+
+        function useProperty(price, sqft) {
+            document.getElementById('price').value = price;
+            document.getElementById('sqft').value = sqft;
+            calculate();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        async function saveAnalysis() {
+            const { data: { user } } = await sb.auth.getUser();
+            if (!user) { alert('Please log in to save.'); return; }
+
+            const inputs = getInputs();
+            const base = calcDeal(inputs);
+
+            try {
+                const { error } = await sb.from('rebwb_saved_analyses').insert({
+                    user_id: user.id,
+                    analysis_name: inputs.dealName,
+                    analysis_data: { inputs, results: base },
+                    scenario_type: 'realistic'
+                });
+                if (error) throw error;
+                alert('Analysis saved successfully!');
+            } catch (e) {
+                alert('Error saving: ' + e.message);
+            }
+        }
+
+        // Initial calculation
+        calculate();
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

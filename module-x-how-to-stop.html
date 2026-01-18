@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module X: How to Stop - REBWB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-xl font-bold text-white">REBWB</a>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-300 hover:text-white transition">Home</a>
+                    <a href="course.html" class="text-gray-300 hover:text-white transition">Course</a>
+                    <a href="dealpilot.html" class="text-gray-300 hover:text-white transition">DealPilot</a>
+                    <a href="templates.html" class="text-gray-300 hover:text-white transition">Templates</a>
+                    <a href="tools.html" class="text-gray-300 hover:text-white transition">Tools</a>
+                    <a href="faq.html" class="text-gray-300 hover:text-white transition">FAQ</a>
+                    <button onclick="signOut()" class="text-gray-300 hover:text-white transition">Logout</button>
+                </div>
+                <button id="mobile-menu-btn" class="md:hidden text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-800 border-t border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Home</a>
+                <a href="course.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Course</a>
+                <a href="dealpilot.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">DealPilot</a>
+                <a href="templates.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Templates</a>
+                <a href="tools.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Tools</a>
+                <a href="faq.html" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">FAQ</a>
+                <button onclick="signOut()" class="block w-full text-left px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded">Logout</button>
+            </div>
+        </div>
+    </nav>
+    <script src="js/auth.js"></script>
+    <script>requireAuth();</script>
+
+    <!-- Module Header -->
+    <section class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <a href="course.html" class="text-blue-400 hover:text-blue-300 mb-4 inline-block">&larr; Back to Course</a>
+            <h1 class="text-4xl font-bold mb-2">Module X: How to Stop</h1>
+            <p class="text-gray-400">A discipline module focused on disqualification, restraint, and early exit.</p>
+        </div>
+    </section>
+
+    <!-- Lessons -->
+    <section class="py-12 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+
+            <!-- LESSON 1 — VIDEO -->
+            <div class="lesson">
+                <h2 class="text-2xl font-bold mb-6">Why Most Losses Begin with Motion</h2>
+                <audio controls class="w-full mb-6 rounded-lg">
+                    <source src="audio/lesson1-motion.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <p class="text-gray-300 mb-6">Listen to this before you open the workbook.</p>
+                <a href="workbooks/Workbook_Page_01_Pre-Commitment_Check.pdf" download class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 px-4 py-3 rounded-lg transition">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Workbook — Pre-Commitment Check
+                </a>
+            </div>
+
+            <!-- LESSON 2 — TEXT -->
+            <div class="lesson">
+                <h2 class="text-2xl font-bold mb-6">The Three Truths That Disqualify Deals</h2>
+                <div class="prose prose-invert max-w-none text-gray-300 space-y-4 mb-6">
+                    <p>Every deal must pass three fundamental truths before it deserves your attention. These are not preferences. They are requirements.</p>
+                    <p><strong>Truth 1: The numbers must work without hope.</strong> If you need appreciation, rent increases, or market timing to make the deal pencil, it doesn't pencil. Walk away.</p>
+                    <p><strong>Truth 2: The risk must be containable.</strong> If one bad tenant, one delayed permit, or one rate change can break the deal, you're not investing—you're gambling.</p>
+                    <p><strong>Truth 3: You must be able to exit.</strong> If there's no clear path to liquidity, you're not buying an asset—you're buying a problem.</p>
+                </div>
+                <hr class="border-gray-700 my-6">
+                <p class="text-gray-300 mb-6">Do not proceed if any one truth fails.</p>
+                <div class="space-y-3">
+                    <a href="workbooks/Workbook_Page_02_Three_Truths_Assessment.pdf" download class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 px-4 py-3 rounded-lg transition">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Workbook — Three Truths Assessment
+                    </a>
+                    <a href="workbooks/Workbook_Page_03_Disqualification_Threshold.pdf" download class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 px-4 py-3 rounded-lg transition ml-0 md:ml-3">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Workbook — Disqualification Threshold
+                    </a>
+                </div>
+            </div>
+
+            <!-- LESSON 3 — VIDEO -->
+            <div class="lesson">
+                <h2 class="text-2xl font-bold mb-6">The Kill Switch: Ending Deals Before They Mature</h2>
+                <audio controls class="w-full mb-6 rounded-lg">
+                    <source src="audio/lesson3-killswitch.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <p class="text-gray-300 mb-6">Answer every question in writing. Hesitation counts.</p>
+                <div class="space-y-3">
+                    <a href="workbooks/Workbook_Page_04_Kill_Switch_Questions.pdf" download class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 px-4 py-3 rounded-lg transition">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Workbook — Kill Switch Questions
+                    </a>
+                    <a href="workbooks/Workbook_Page_05_Kill_Switch_Decision.pdf" download class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 px-4 py-3 rounded-lg transition ml-0 md:ml-3">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Workbook — Kill Switch Decision
+                    </a>
+                </div>
+            </div>
+
+            <!-- LESSON 4 — TEXT -->
+            <div class="lesson">
+                <h2 class="text-2xl font-bold mb-6">The Red Flag Protocol</h2>
+                <div class="prose prose-invert max-w-none text-gray-300 space-y-4 mb-6">
+                    <p>Red flags are not warnings to investigate further. They are signals to stop.</p>
+                    <p>The protocol is simple: when you encounter a red flag, you do not proceed until it is resolved. Resolution means one of three things: the issue is eliminated, the issue is priced into the deal, or you walk.</p>
+                    <p>Common red flags include: seller urgency without explanation, missing documentation, inconsistent financials, deferred maintenance beyond cosmetic, zoning ambiguity, and environmental concerns.</p>
+                    <p>If you find yourself explaining away a red flag, you've already lost objectivity. Use the inventory below to track what you've seen—and what you've chosen to ignore.</p>
+                </div>
+                <hr class="border-gray-700 my-6">
+                <a href="workbooks/Workbook_Page_06_Red_Flag_Inventory.pdf" download class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 px-4 py-3 rounded-lg transition">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Workbook — Red Flag Inventory
+                </a>
+            </div>
+
+            <!-- LESSON 5 — TEXT (OPTIONAL) -->
+            <div class="lesson">
+                <h2 class="text-2xl font-bold mb-6">Quantifying Exposure (Optional)</h2>
+                <p class="text-gray-300 mb-4">This section exists for those who think better with numbers. If you find yourself negotiating with the output, stop and return to the Kill Switch.</p>
+                <div class="prose prose-invert max-w-none text-gray-300 space-y-4 mb-6">
+                    <p>The Exposure-Weighted Deal Test (EWDT) assigns numeric values to key risk factors: capital at risk, time commitment, market dependency, operational complexity, and exit friction. Each factor is scored 1-5, weighted by your personal risk tolerance, and summed.</p>
+                    <p>A score above your predetermined threshold means no. Not "maybe." Not "let me run it again." No.</p>
+                </div>
+                <div class="space-y-3">
+                    <a href="workbooks/Workbook_Page_07_EWDT_Optional.pdf" download class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 px-4 py-3 rounded-lg transition">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Workbook — Exposure-Weighted Deal Test (Optional)
+                    </a>
+                    <a href="workbooks/Workbook_Page_08_Numeric_Disqualification.pdf" download class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 px-4 py-3 rounded-lg transition ml-0 md:ml-3">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Workbook — Numeric Disqualification
+                    </a>
+                </div>
+            </div>
+
+            <!-- LESSON 6 — VIDEO -->
+            <div class="lesson">
+                <h2 class="text-2xl font-bold mb-6">Recording Restraint</h2>
+                <audio controls class="w-full mb-6 rounded-lg">
+                    <source src="audio/lesson6-restraint.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <a href="workbooks/Workbook_Page_09_Disqualification_Ledger.pdf" download class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 px-4 py-3 rounded-lg transition">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Workbook — Disqualification Ledger
+                </a>
+            </div>
+
+            <!-- LESSON 7 — VIDEO -->
+            <div class="lesson">
+                <h2 class="text-2xl font-bold mb-6">The Annual Review</h2>
+                <audio controls class="w-full mb-6 rounded-lg">
+                    <source src="audio/lesson7-annual.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <a href="workbooks/Workbook_Page_10_Annual_Review.pdf" download class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 px-4 py-3 rounded-lg transition mb-6">
+                    <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Workbook — Annual Review
+                </a>
+                <hr class="border-gray-700 my-6">
+                <p class="text-gray-300">Do not begin another deal until you have walked away from at least one.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p>&copy; 2024 REBWB - Real Estate Without Bullshit. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

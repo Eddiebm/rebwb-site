@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal Analyzer Workbook - REBWB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        @media print {
+            nav, footer, .no-print { display: none !important; }
+            body { background: white !important; color: black !important; font-size: 12pt; }
+            .print-section { break-inside: avoid; page-break-inside: avoid; }
+            .bg-gray-800, .bg-gray-900 { background: #f5f5f5 !important; }
+            .text-white, .text-gray-100 { color: black !important; }
+            .text-gray-400 { color: #666 !important; }
+            input, select { border: 1px solid #ccc !important; background: white !important; color: black !important; }
+        }
+        .score-excellent { background: #059669; }
+        .score-good { background: #10b981; }
+        .score-marginal { background: #f59e0b; }
+        .score-poor { background: #ef4444; }
+        .score-kill { background: #7f1d1d; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="text-xl font-bold text-white">REBWB</a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-gray-300 hover:text-white transition">Home</a>
+                    <a href="course.html" class="text-gray-300 hover:text-white transition">Course</a>
+                    <a href="workbook.html" class="text-white font-semibold">Workbook</a>
+                    <a href="advanced-analyzer.html" class="text-gray-300 hover:text-white transition">Analyzer</a>
+                    <button onclick="signOut()" class="text-gray-300 hover:text-white transition">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script src="js/auth.js"></script>
+    <script>requireAuth();</script>
+
+    <div class="max-w-5xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8 no-print">
+            <div>
+                <h1 class="text-3xl font-bold">Deal Analyzer Workbook</h1>
+                <p class="text-gray-400">Enter deal details → Get instant GO/WAIT/KILL recommendation</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="window.print()" class="px-4 py-2 border border-gray-600 text-gray-300 rounded hover:bg-gray-700 transition">Print Report</button>
+                <button onclick="analyzeWithAI()" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition">AI Assist</button>
+            </div>
+        </div>
+
+        <!-- Deal Info Section -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-6 print-section">
+            <h2 class="text-xl font-bold mb-4">Deal Information</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Property Address</label>
+                    <input type="text" id="address" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" placeholder="123 Main St, City, State">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Property Type</label>
+                    <select id="propertyType" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white">
+                        <option value="sfr">Single Family</option>
+                        <option value="duplex">Duplex</option>
+                        <option value="triplex">Triplex</option>
+                        <option value="fourplex">Fourplex</option>
+                        <option value="multifamily">Multifamily (5+)</option>
+                        <option value="commercial">Commercial</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Number of Units</label>
+                    <input type="number" id="units" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" value="1" min="1">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Year Built</label>
+                    <input type="number" id="yearBuilt" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" placeholder="1990">
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Inputs -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-6 print-section">
+            <h2 class="text-xl font-bold mb-4">Financial Details</h2>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Purchase Price ($)</label>
+                    <input type="number" id="purchasePrice" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" placeholder="250000" onchange="calculate()">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Down Payment (%)</label>
+                    <input type="number" id="downPaymentPct" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" value="25" onchange="calculate()">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Interest Rate (%)</label>
+                    <input type="number" id="interestRate" step="0.125" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" value="7.0" onchange="calculate()">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Loan Term (years)</label>
+                    <input type="number" id="loanTerm" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" value="30" onchange="calculate()">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Closing Costs ($)</label>
+                    <input type="number" id="closingCosts" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" placeholder="5000" onchange="calculate()">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Rehab Costs ($)</label>
+                    <input type="number" id="rehabCosts" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" placeholder="0" onchange="calculate()">
+                </div>
+            </div>
+        </div>
+
+        <!-- ARV / Fix & Flip Analysis -->
+        <div class="bg-gray-800 rounded-lg border border-yellow-600 p-6 mb-6 print-section">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-yellow-400">Fix & Flip Analysis (Optional)</h2>
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="enableFlip" class="rounded" onchange="calculate()">
+                    <span class="text-sm text-gray-400">Enable flip analysis</span>
+                </label>
+            </div>
+            <p class="text-gray-400 text-sm mb-4">For investors planning to renovate and sell. Uses the 70% Rule.</p>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">After Repair Value - ARV ($)</label>
+                    <input type="number" id="arv" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" placeholder="350000" onchange="calculate()">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Holding Period (months)</label>
+                    <input type="number" id="holdingPeriod" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" value="6" onchange="calculate()">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Selling Costs (%)</label>
+                    <input type="number" id="sellingCostsPct" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" value="8" onchange="calculate()">
+                </div>
+            </div>
+            <!-- ARV Research Helper -->
+            <div class="mt-4 p-4 bg-gray-900 rounded border border-gray-700">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-semibold text-yellow-400">ARV Research Helper</h3>
+                    <button onclick="generateCompPrompt()" class="px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700">Generate Comp Search</button>
+                </div>
+                <div class="grid md:grid-cols-3 gap-3 mb-3">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Bedrooms</label>
+                        <input type="number" id="compBeds" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-1 text-white text-sm" placeholder="3">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Bathrooms</label>
+                        <input type="number" id="compBaths" step="0.5" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-1 text-white text-sm" placeholder="2">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">Square Feet</label>
+                        <input type="number" id="compSqft" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-1 text-white text-sm" placeholder="1500">
+                    </div>
+                </div>
+                <div id="compPromptBox" class="hidden">
+                    <label class="block text-xs text-gray-400 mb-1">Copy & paste this into Zillow/Redfin search:</label>
+                    <div class="bg-gray-800 p-3 rounded text-sm text-gray-300 space-y-3" id="compPromptText"></div>
+                    <button onclick="copyCompPrompt()" class="mt-2 px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">Copy Instructions</button>
+                </div>
+            </div>
+
+            <div class="mt-4 p-4 bg-gray-900 rounded" id="flipResults" style="display:none;">
+                <div class="grid md:grid-cols-4 gap-4 text-center">
+                    <div>
+                        <div class="text-2xl font-bold" id="maxPurchase70">$0</div>
+                        <div class="text-xs text-gray-400">Max Purchase (70% Rule)</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold" id="flipProfit">$0</div>
+                        <div class="text-xs text-gray-400">Est. Profit</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold" id="flipROI">0%</div>
+                        <div class="text-xs text-gray-400">ROI</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold" id="flipVerdict">-</div>
+                        <div class="text-xs text-gray-400">Flip Verdict</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Income & Expenses -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-6 print-section">
+            <h2 class="text-xl font-bold mb-4">Income & Expenses (Monthly) - For Buy & Hold</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold text-green-400 mb-3">Income</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm mb-1">Gross Rent ($)</label>
+                            <input type="number" id="grossRent" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" placeholder="2000" onchange="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Other Income ($)</label>
+                            <input type="number" id="otherIncome" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" value="0" onchange="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Vacancy Rate (%)</label>
+                            <input type="number" id="vacancyRate" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" value="8" onchange="calculate()">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-red-400 mb-3">Expenses</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm mb-1">Property Taxes ($)</label>
+                            <input type="number" id="taxes" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" placeholder="250" onchange="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Insurance ($)</label>
+                            <input type="number" id="insurance" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" placeholder="150" onchange="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Repairs/CapEx ($)</label>
+                            <input type="number" id="repairs" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" placeholder="150" onchange="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Property Management ($)</label>
+                            <input type="number" id="management" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" placeholder="200" onchange="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Utilities ($)</label>
+                            <input type="number" id="utilities" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" value="0" onchange="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">HOA ($)</label>
+                            <input type="number" id="hoa" class="w-full bg-gray-900 border border-gray-600 rounded px-4 py-2 text-white" value="0" onchange="calculate()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Red Flags Checklist -->
+        <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-6 print-section">
+            <h2 class="text-xl font-bold mb-4">Red Flag Checklist</h2>
+            <p class="text-gray-400 mb-4">Check any that apply - each reduces your score</p>
+            <div class="grid md:grid-cols-2 gap-3">
+                <label class="flex items-center gap-3 p-3 bg-gray-900 rounded cursor-pointer hover:bg-gray-700">
+                    <input type="checkbox" id="rf1" class="rounded" onchange="calculate()"> Seller won't provide financials
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-gray-900 rounded cursor-pointer hover:bg-gray-700">
+                    <input type="checkbox" id="rf2" class="rounded" onchange="calculate()"> Foundation issues
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-gray-900 rounded cursor-pointer hover:bg-gray-700">
+                    <input type="checkbox" id="rf3" class="rounded" onchange="calculate()"> Roof needs replacement
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-gray-900 rounded cursor-pointer hover:bg-gray-700">
+                    <input type="checkbox" id="rf4" class="rounded" onchange="calculate()"> HVAC needs replacement
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-gray-900 rounded cursor-pointer hover:bg-gray-700">
+                    <input type="checkbox" id="rf5" class="rounded" onchange="calculate()"> Environmental concerns
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-gray-900 rounded cursor-pointer hover:bg-gray-700">
+                    <input type="checkbox" id="rf6" class="rounded" onchange="calculate()"> High crime area
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-gray-900 rounded cursor-pointer hover:bg-gray-700">
+                    <input type="checkbox" id="rf7" class="rounded" onchange="calculate()"> Declining neighborhood
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-gray-900 rounded cursor-pointer hover:bg-gray-700">
+                    <input type="checkbox" id="rf8" class="rounded" onchange="calculate()"> Problem tenants in place
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-gray-900 rounded cursor-pointer hover:bg-gray-700">
+                    <input type="checkbox" id="rf9" class="rounded" onchange="calculate()"> Below market rents (hard to raise)
+                </label>
+                <label class="flex items-center gap-3 p-3 bg-gray-900 rounded cursor-pointer hover:bg-gray-700">
+                    <input type="checkbox" id="rf10" class="rounded" onchange="calculate()"> Zoning/permit issues
+                </label>
+            </div>
+        </div>
+
+        <!-- Calculate Button -->
+        <div class="text-center mb-8 no-print">
+            <button onclick="calculate()" class="px-8 py-4 bg-blue-600 text-white text-xl font-bold rounded-lg hover:bg-blue-700 transition">
+                ANALYZE DEAL
+            </button>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden">
+            <!-- Verdict -->
+            <div id="verdictBox" class="rounded-lg p-8 mb-6 text-center print-section">
+                <div class="text-6xl font-black mb-2" id="verdictText">GO</div>
+                <div class="text-xl" id="verdictSubtext">This deal meets investment criteria</div>
+            </div>
+
+            <!-- Key Metrics -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-6 print-section">
+                <h2 class="text-xl font-bold mb-4">Key Metrics</h2>
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="bg-gray-900 p-4 rounded text-center">
+                        <div class="text-3xl font-bold" id="metricCOC">0%</div>
+                        <div class="text-sm text-gray-400">Cash-on-Cash Return</div>
+                        <div class="text-xs mt-1" id="metricCOCStatus">-</div>
+                    </div>
+                    <div class="bg-gray-900 p-4 rounded text-center">
+                        <div class="text-3xl font-bold" id="metricCapRate">0%</div>
+                        <div class="text-sm text-gray-400">Cap Rate</div>
+                        <div class="text-xs mt-1" id="metricCapRateStatus">-</div>
+                    </div>
+                    <div class="bg-gray-900 p-4 rounded text-center">
+                        <div class="text-3xl font-bold" id="metricDSCR">0.00</div>
+                        <div class="text-sm text-gray-400">DSCR</div>
+                        <div class="text-xs mt-1" id="metricDSCRStatus">-</div>
+                    </div>
+                    <div class="bg-gray-900 p-4 rounded text-center">
+                        <div class="text-3xl font-bold" id="metricCashFlow">$0</div>
+                        <div class="text-sm text-gray-400">Monthly Cash Flow</div>
+                        <div class="text-xs mt-1" id="metricCashFlowStatus">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score Breakdown -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-6 print-section">
+                <h2 class="text-xl font-bold mb-4">Score Breakdown</h2>
+                <div class="space-y-3" id="scoreBreakdown">
+                    <!-- Filled by JS -->
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-700 flex justify-between items-center">
+                    <span class="font-bold text-lg">Total Score</span>
+                    <span class="text-3xl font-bold" id="totalScore">0/100</span>
+                </div>
+            </div>
+
+            <!-- Issues & Concerns -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-6 print-section">
+                <h2 class="text-xl font-bold mb-4">Issues & Concerns</h2>
+                <ul id="issuesList" class="space-y-2">
+                    <!-- Filled by JS -->
+                </ul>
+            </div>
+
+            <!-- Financial Summary -->
+            <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-6 print-section">
+                <h2 class="text-xl font-bold mb-4">Financial Summary</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold mb-3">Investment</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between"><span>Down Payment:</span><span id="sumDownPayment">$0</span></div>
+                            <div class="flex justify-between"><span>Closing Costs:</span><span id="sumClosing">$0</span></div>
+                            <div class="flex justify-between"><span>Rehab Costs:</span><span id="sumRehab">$0</span></div>
+                            <div class="flex justify-between border-t border-gray-600 pt-2 font-bold"><span>Total Cash Needed:</span><span id="sumTotalCash">$0</span></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold mb-3">Monthly Cash Flow</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between"><span>Effective Gross Income:</span><span id="sumEGI">$0</span></div>
+                            <div class="flex justify-between"><span>Operating Expenses:</span><span id="sumOpEx">$0</span></div>
+                            <div class="flex justify-between"><span>NOI:</span><span id="sumNOI">$0</span></div>
+                            <div class="flex justify-between"><span>Mortgage Payment:</span><span id="sumMortgage">$0</span></div>
+                            <div class="flex justify-between border-t border-gray-600 pt-2 font-bold"><span>Net Cash Flow:</span><span id="sumCashFlow">$0</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Analysis Section -->
+            <div id="aiSection" class="bg-gray-800 rounded-lg border border-gray-700 p-6 mb-6 print-section hidden">
+                <h2 class="text-xl font-bold mb-4">AI Underwriter Analysis</h2>
+                <div id="aiAnalysis" class="prose prose-invert max-w-none">
+                    <!-- Filled by AI -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 border-t border-gray-700 py-8 no-print">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-bold text-white mb-1">REBWB</p>
+            <p class="text-sm text-gray-400">Real Estate Without Bullshit</p>
+        </div>
+    </footer>
+
+    <script>
+        // Thresholds for scoring
+        var THRESHOLDS = {
+            coc: { excellent: 12, good: 8, marginal: 5, min: 0 },
+            capRate: { excellent: 8, good: 6, marginal: 4, min: 0 },
+            dscr: { excellent: 1.5, good: 1.25, marginal: 1.1, min: 1.0 },
+            cashFlow: { excellent: 500, good: 300, marginal: 100, min: 0 }
+        };
+
+        function getVal(id) {
+            return parseFloat(document.getElementById(id).value) || 0;
+        }
+
+        function formatMoney(n) {
+            return '$' + n.toLocaleString('en-US', {maximumFractionDigits: 0});
+        }
+
+        window.calculate = function() {
+            // Gather inputs
+            var purchasePrice = getVal('purchasePrice');
+            var downPaymentPct = getVal('downPaymentPct');
+            var interestRate = getVal('interestRate');
+            var loanTerm = getVal('loanTerm');
+            var closingCosts = getVal('closingCosts');
+            var rehabCosts = getVal('rehabCosts');
+            var grossRent = getVal('grossRent');
+            var otherIncome = getVal('otherIncome');
+            var vacancyRate = getVal('vacancyRate');
+            var taxes = getVal('taxes');
+            var insurance = getVal('insurance');
+            var repairs = getVal('repairs');
+            var management = getVal('management');
+            var utilities = getVal('utilities');
+            var hoa = getVal('hoa');
+
+            var enableFlipCheck = document.getElementById('enableFlip').checked;
+            if (!purchasePrice || (!grossRent && !enableFlipCheck)) {
+                document.getElementById('resultsSection').classList.add('hidden');
+                return;
+            }
+
+            // Calculate mortgage
+            var downPayment = purchasePrice * (downPaymentPct / 100);
+            var loanAmount = purchasePrice - downPayment;
+            var monthlyRate = (interestRate / 100) / 12;
+            var numPayments = loanTerm * 12;
+            var mortgagePayment = 0;
+            if (monthlyRate > 0 && loanAmount > 0) {
+                mortgagePayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1);
+            }
+
+            // Income calculations
+            var totalGrossIncome = grossRent + otherIncome;
+            var vacancyLoss = totalGrossIncome * (vacancyRate / 100);
+            var effectiveGrossIncome = totalGrossIncome - vacancyLoss;
+
+            // Expense calculations
+            var operatingExpenses = taxes + insurance + repairs + management + utilities + hoa;
+            var noi = effectiveGrossIncome - operatingExpenses;
+            var cashFlow = noi - mortgagePayment;
+
+            // Total cash needed
+            var totalCashNeeded = downPayment + closingCosts + rehabCosts;
+
+            // Key metrics
+            var cocReturn = totalCashNeeded > 0 ? (cashFlow * 12 / totalCashNeeded) * 100 : 0;
+            var capRate = purchasePrice > 0 ? (noi * 12 / purchasePrice) * 100 : 0;
+            var dscr = mortgagePayment > 0 ? noi / mortgagePayment : 999;
+
+            // Flip Analysis
+            var enableFlip = document.getElementById('enableFlip').checked;
+            var flipResultsEl = document.getElementById('flipResults');
+            if (enableFlip) {
+                flipResultsEl.style.display = 'block';
+                var arv = getVal('arv');
+                var holdingPeriod = getVal('holdingPeriod');
+                var sellingCostsPct = getVal('sellingCostsPct');
+                
+                // 70% Rule: Max Purchase = (ARV * 0.70) - Rehab
+                var maxPurchase70 = (arv * 0.70) - rehabCosts;
+                
+                // Holding costs (mortgage + taxes + insurance during hold)
+                var monthlyHoldingCost = mortgagePayment + taxes + insurance;
+                var totalHoldingCosts = monthlyHoldingCost * holdingPeriod;
+                
+                // Selling costs
+                var sellingCosts = arv * (sellingCostsPct / 100);
+                
+                // Profit calculation
+                var totalInvestment = purchasePrice + rehabCosts + closingCosts + totalHoldingCosts;
+                var netSaleProceeds = arv - sellingCosts;
+                var flipProfit = netSaleProceeds - totalInvestment;
+                var flipROI = totalInvestment > 0 ? (flipProfit / totalInvestment) * 100 : 0;
+                
+                // Update flip results UI
+                document.getElementById('maxPurchase70').textContent = formatMoney(maxPurchase70);
+                document.getElementById('maxPurchase70').className = 'text-2xl font-bold ' + (purchasePrice <= maxPurchase70 ? 'text-green-400' : 'text-red-400');
+                
+                document.getElementById('flipProfit').textContent = formatMoney(flipProfit);
+                document.getElementById('flipProfit').className = 'text-2xl font-bold ' + (flipProfit > 0 ? 'text-green-400' : 'text-red-400');
+                
+                document.getElementById('flipROI').textContent = flipROI.toFixed(1) + '%';
+                document.getElementById('flipROI').className = 'text-2xl font-bold ' + (flipROI >= 20 ? 'text-green-400' : flipROI >= 10 ? 'text-yellow-400' : 'text-red-400');
+                
+                var flipVerdictText = 'KILL';
+                var flipVerdictClass = 'text-red-400';
+                if (flipROI >= 25 && purchasePrice <= maxPurchase70) {
+                    flipVerdictText = 'GO'; flipVerdictClass = 'text-green-400';
+                } else if (flipROI >= 15) {
+                    flipVerdictText = 'WAIT'; flipVerdictClass = 'text-yellow-400';
+                }
+                document.getElementById('flipVerdict').textContent = flipVerdictText;
+                document.getElementById('flipVerdict').className = 'text-2xl font-bold ' + flipVerdictClass;
+            } else {
+                flipResultsEl.style.display = 'none';
+            }
+
+            // Count red flags
+            var redFlagCount = 0;
+            for (var i = 1; i <= 10; i++) {
+                if (document.getElementById('rf' + i).checked) redFlagCount++;
+            }
+
+            // Score calculation
+            var scores = [];
+            var issues = [];
+
+            // COC Score (25 points max)
+            var cocScore = 0;
+            var cocStatus = '';
+            if (cocReturn >= THRESHOLDS.coc.excellent) { cocScore = 25; cocStatus = 'Excellent'; }
+            else if (cocReturn >= THRESHOLDS.coc.good) { cocScore = 20; cocStatus = 'Good'; }
+            else if (cocReturn >= THRESHOLDS.coc.marginal) { cocScore = 12; cocStatus = 'Marginal'; }
+            else if (cocReturn >= THRESHOLDS.coc.min) { cocScore = 5; cocStatus = 'Poor'; }
+            else { cocScore = 0; cocStatus = 'Negative'; issues.push('Negative cash-on-cash return'); }
+            scores.push({name: 'Cash-on-Cash Return', score: cocScore, max: 25, status: cocStatus});
+
+            // Cap Rate Score (20 points max)
+            var capScore = 0;
+            var capStatus = '';
+            if (capRate >= THRESHOLDS.capRate.excellent) { capScore = 20; capStatus = 'Excellent'; }
+            else if (capRate >= THRESHOLDS.capRate.good) { capScore = 16; capStatus = 'Good'; }
+            else if (capRate >= THRESHOLDS.capRate.marginal) { capScore = 10; capStatus = 'Marginal'; }
+            else { capScore = 5; capStatus = 'Low'; issues.push('Cap rate below 4% - low return relative to price'); }
+            scores.push({name: 'Cap Rate', score: capScore, max: 20, status: capStatus});
+
+            // DSCR Score (25 points max)
+            var dscrScore = 0;
+            var dscrStatus = '';
+            if (dscr >= THRESHOLDS.dscr.excellent) { dscrScore = 25; dscrStatus = 'Excellent'; }
+            else if (dscr >= THRESHOLDS.dscr.good) { dscrScore = 20; dscrStatus = 'Good'; }
+            else if (dscr >= THRESHOLDS.dscr.marginal) { dscrScore = 12; dscrStatus = 'Marginal'; }
+            else if (dscr >= THRESHOLDS.dscr.min) { dscrScore = 5; dscrStatus = 'Risky'; issues.push('DSCR below 1.1 - tight debt coverage'); }
+            else { dscrScore = 0; dscrStatus = 'KILL'; issues.push('DSCR below 1.0 - income does not cover debt'); }
+            scores.push({name: 'Debt Service Coverage', score: dscrScore, max: 25, status: dscrStatus});
+
+            // Cash Flow Score (20 points max)
+            var cfScore = 0;
+            var cfStatus = '';
+            if (cashFlow >= THRESHOLDS.cashFlow.excellent) { cfScore = 20; cfStatus = 'Excellent'; }
+            else if (cashFlow >= THRESHOLDS.cashFlow.good) { cfScore = 16; cfStatus = 'Good'; }
+            else if (cashFlow >= THRESHOLDS.cashFlow.marginal) { cfScore = 10; cfStatus = 'Marginal'; }
+            else if (cashFlow >= 0) { cfScore = 5; cfStatus = 'Breakeven'; issues.push('Cash flow under $100/month - minimal margin'); }
+            else { cfScore = 0; cfStatus = 'Negative'; issues.push('Negative monthly cash flow'); }
+            scores.push({name: 'Monthly Cash Flow', score: cfScore, max: 20, status: cfStatus});
+
+            // Red Flags Score (10 points max, lose 2 per flag)
+            var rfScore = Math.max(0, 10 - (redFlagCount * 2));
+            var rfStatus = redFlagCount === 0 ? 'Clean' : redFlagCount + ' flags';
+            if (redFlagCount > 0) {
+                issues.push(redFlagCount + ' red flag(s) identified');
+            }
+            if (redFlagCount >= 3) {
+                issues.push('Multiple red flags - proceed with extreme caution');
+            }
+            scores.push({name: 'Red Flags', score: rfScore, max: 10, status: rfStatus});
+
+            // Total score
+            var totalScore = cocScore + capScore + dscrScore + cfScore + rfScore;
+
+            // Determine verdict
+            var verdict = 'GO';
+            var verdictClass = 'score-excellent';
+            var verdictSubtext = 'This deal meets investment criteria';
+
+            if (totalScore >= 80) {
+                verdict = 'GO'; verdictClass = 'score-excellent'; verdictSubtext = 'Strong deal - meets all major criteria';
+            } else if (totalScore >= 65) {
+                verdict = 'GO'; verdictClass = 'score-good'; verdictSubtext = 'Good deal - proceed with normal due diligence';
+            } else if (totalScore >= 50) {
+                verdict = 'WAIT'; verdictClass = 'score-marginal'; verdictSubtext = 'Marginal deal - negotiate better terms or walk';
+            } else if (totalScore >= 35) {
+                verdict = 'WAIT'; verdictClass = 'score-poor'; verdictSubtext = 'Weak deal - significant issues need resolution';
+            } else {
+                verdict = 'KILL'; verdictClass = 'score-kill'; verdictSubtext = 'Do not proceed - deal fails critical criteria';
+            }
+
+            // Override for critical failures
+            if (dscr < 1.0 || cashFlow < -200) {
+                verdict = 'KILL'; verdictClass = 'score-kill'; verdictSubtext = 'Critical failure - negative cash flow or DSCR < 1';
+            }
+            if (redFlagCount >= 5) {
+                verdict = 'KILL'; verdictClass = 'score-kill'; verdictSubtext = 'Too many red flags - excessive risk';
+            }
+
+            // Update UI
+            document.getElementById('resultsSection').classList.remove('hidden');
+
+            // Verdict
+            document.getElementById('verdictBox').className = 'rounded-lg p-8 mb-6 text-center print-section text-white ' + verdictClass;
+            document.getElementById('verdictText').textContent = verdict;
+            document.getElementById('verdictSubtext').textContent = verdictSubtext;
+
+            // Metrics
+            document.getElementById('metricCOC').textContent = cocReturn.toFixed(1) + '%';
+            document.getElementById('metricCOCStatus').textContent = cocStatus;
+            document.getElementById('metricCOCStatus').className = 'text-xs mt-1 ' + (cocReturn >= 8 ? 'text-green-400' : cocReturn >= 5 ? 'text-yellow-400' : 'text-red-400');
+
+            document.getElementById('metricCapRate').textContent = capRate.toFixed(1) + '%';
+            document.getElementById('metricCapRateStatus').textContent = capStatus;
+            document.getElementById('metricCapRateStatus').className = 'text-xs mt-1 ' + (capRate >= 6 ? 'text-green-400' : capRate >= 4 ? 'text-yellow-400' : 'text-red-400');
+
+            document.getElementById('metricDSCR').textContent = dscr.toFixed(2);
+            document.getElementById('metricDSCRStatus').textContent = dscrStatus;
+            document.getElementById('metricDSCRStatus').className = 'text-xs mt-1 ' + (dscr >= 1.25 ? 'text-green-400' : dscr >= 1.1 ? 'text-yellow-400' : 'text-red-400');
+
+            document.getElementById('metricCashFlow').textContent = formatMoney(cashFlow);
+            document.getElementById('metricCashFlowStatus').textContent = cfStatus;
+            document.getElementById('metricCashFlowStatus').className = 'text-xs mt-1 ' + (cashFlow >= 300 ? 'text-green-400' : cashFlow >= 100 ? 'text-yellow-400' : 'text-red-400');
+
+            // Score breakdown
+            var breakdownHTML = '';
+            scores.forEach(function(s) {
+                var pct = (s.score / s.max) * 100;
+                var color = pct >= 80 ? 'bg-green-500' : pct >= 50 ? 'bg-yellow-500' : 'bg-red-500';
+                breakdownHTML += '<div class="flex items-center gap-4">' +
+                    '<span class="w-40">' + s.name + '</span>' +
+                    '<div class="flex-1 bg-gray-700 rounded-full h-4">' +
+                    '<div class="' + color + ' h-4 rounded-full" style="width:' + pct + '%"></div>' +
+                    '</div>' +
+                    '<span class="w-20 text-right">' + s.score + '/' + s.max + '</span>' +
+                    '<span class="w-24 text-right text-sm text-gray-400">' + s.status + '</span>' +
+                    '</div>';
+            });
+            document.getElementById('scoreBreakdown').innerHTML = breakdownHTML;
+            document.getElementById('totalScore').textContent = totalScore + '/100';
+
+            // Issues
+            var issuesHTML = '';
+            if (issues.length === 0) {
+                issuesHTML = '<li class="text-green-400">✓ No major issues identified</li>';
+            } else {
+                issues.forEach(function(issue) {
+                    issuesHTML += '<li class="text-red-400">⚠ ' + issue + '</li>';
+                });
+            }
+            document.getElementById('issuesList').innerHTML = issuesHTML;
+
+            // Financial summary
+            document.getElementById('sumDownPayment').textContent = formatMoney(downPayment);
+            document.getElementById('sumClosing').textContent = formatMoney(closingCosts);
+            document.getElementById('sumRehab').textContent = formatMoney(rehabCosts);
+            document.getElementById('sumTotalCash').textContent = formatMoney(totalCashNeeded);
+            document.getElementById('sumEGI').textContent = formatMoney(effectiveGrossIncome);
+            document.getElementById('sumOpEx').textContent = formatMoney(operatingExpenses);
+            document.getElementById('sumNOI').textContent = formatMoney(noi);
+            document.getElementById('sumMortgage').textContent = formatMoney(mortgagePayment);
+            document.getElementById('sumCashFlow').textContent = formatMoney(cashFlow);
+
+            // Scroll to results
+            document.getElementById('resultsSection').scrollIntoView({behavior: 'smooth'});
+        }
+
+        window.generateCompPrompt = function() {
+            var address = document.getElementById('address').value || '[Your Property Address]';
+            var beds = document.getElementById('compBeds').value || '3';
+            var baths = document.getElementById('compBaths').value || '2';
+            var sqft = document.getElementById('compSqft').value || '1500';
+            var sqftMin = Math.round(sqft * 0.85);
+            var sqftMax = Math.round(sqft * 1.15);
+            var bedsMin = Math.max(1, parseInt(beds) - 1);
+            var bedsMax = parseInt(beds) + 1;
+            
+            var promptHTML = '<div class="mb-3"><strong class="text-yellow-400">📍 Search Location:</strong><br>' +
+                'Enter: <span class="text-white font-mono bg-gray-700 px-1">' + address + '</span><br>' +
+                'Set radius: <span class="text-white">1 mile</span></div>' +
+                
+                '<div class="mb-3"><strong class="text-green-400">🏠 Property Filters:</strong><br>' +
+                '• Bedrooms: ' + bedsMin + ' - ' + bedsMax + '<br>' +
+                '• Bathrooms: ' + Math.max(1, baths - 0.5) + ' - ' + (parseFloat(baths) + 0.5) + '<br>' +
+                '• Square Feet: ' + sqftMin.toLocaleString() + ' - ' + sqftMax.toLocaleString() + '<br>' +
+                '• Property Type: Same as subject (SFR, Condo, etc.)</div>' +
+                
+                '<div class="mb-3"><strong class="text-blue-400">📊 Run 3 Separate Searches:</strong></div>' +
+                
+                '<div class="border-l-2 border-blue-500 pl-3 mb-2">' +
+                '<strong>1. SOLD - Last 6 Months</strong><br>' +
+                'Status: Sold | Time: 6 months<br>' +
+                '<span class="text-gray-400 text-xs">Best comps - most relevant to current market</span></div>' +
+                
+                '<div class="border-l-2 border-yellow-500 pl-3 mb-2">' +
+                '<strong>2. SOLD - Last 12 Months</strong><br>' +
+                'Status: Sold | Time: 12 months<br>' +
+                '<span class="text-gray-400 text-xs">More data if 6-month comps are limited</span></div>' +
+                
+                '<div class="border-l-2 border-orange-500 pl-3 mb-2">' +
+                '<strong>3. SOLD - Last 18 Months</strong><br>' +
+                'Status: Sold | Time: 18 months<br>' +
+                '<span class="text-gray-400 text-xs">Use with caution - market may have shifted</span></div>' +
+                
+                '<div class="border-l-2 border-green-500 pl-3 mb-2">' +
+                '<strong>4. PENDING & JUST LISTED</strong><br>' +
+                'Status: Pending + For Sale<br>' +
+                '<span class="text-gray-400 text-xs">Shows current market expectations</span></div>' +
+                
+                '<div class="mt-3 p-2 bg-gray-700 rounded text-xs">' +
+                '<strong>💡 ARV Calculation Tips:</strong><br>' +
+                '• Use 3-5 most similar SOLD properties<br>' +
+                '• Adjust for condition: Your renovated property vs. comp condition<br>' +
+                '• Price per sqft is key: Total ÷ SqFt = $/SqFt<br>' +
+                '• ARV = Your SqFt × Average $/SqFt of renovated comps</div>';
+            
+            document.getElementById('compPromptText').innerHTML = promptHTML;
+            document.getElementById('compPromptBox').classList.remove('hidden');
+        };
+        
+        window.copyCompPrompt = function() {
+            var address = document.getElementById('address').value || '[Your Property Address]';
+            var beds = document.getElementById('compBeds').value || '3';
+            var baths = document.getElementById('compBaths').value || '2';
+            var sqft = document.getElementById('compSqft').value || '1500';
+            var sqftMin = Math.round(sqft * 0.85);
+            var sqftMax = Math.round(sqft * 1.15);
+            var bedsMin = Math.max(1, parseInt(beds) - 1);
+            var bedsMax = parseInt(beds) + 1;
+            
+            var text = 'ARV COMP SEARCH INSTRUCTIONS\n\n' +
+                '📍 LOCATION: ' + address + ' (1 mile radius)\n\n' +
+                '🏠 FILTERS:\n' +
+                '• Beds: ' + bedsMin + '-' + bedsMax + '\n' +
+                '• Baths: ' + Math.max(1, baths - 0.5) + '-' + (parseFloat(baths) + 0.5) + '\n' +
+                '• SqFt: ' + sqftMin + '-' + sqftMax + '\n\n' +
+                'RUN THESE SEARCHES:\n' +
+                '1. SOLD - Last 6 months (best comps)\n' +
+                '2. SOLD - Last 12 months (if limited data)\n' +
+                '3. SOLD - Last 18 months (use with caution)\n' +
+                '4. PENDING + FOR SALE (current market)\n\n' +
+                'ARV = Your SqFt × Avg $/SqFt of renovated comps';
+            
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Instructions copied to clipboard!');
+            });
+        };
+
+        window.analyzeWithAI = function() {
+            try {
+                // First run calculate to ensure we have results
+                window.calculate();
+                
+                // Check if deal data exists
+                var purchasePrice = getVal('purchasePrice');
+                var grossRent = getVal('grossRent');
+                if (!purchasePrice || !grossRent) {
+                    alert('Please enter Purchase Price and Gross Rent first.');
+                    return;
+                }
+
+                var apiKey = localStorage.getItem('openai_api_key');
+                if (!apiKey) {
+                    apiKey = prompt('Enter your OpenAI API key:');
+                    if (apiKey && apiKey.trim()) {
+                        localStorage.setItem('openai_api_key', apiKey.trim());
+                        apiKey = apiKey.trim();
+                    } else {
+                        alert('No API key provided');
+                        return;
+                    }
+                }
+            } catch(e) {
+                alert('Error: ' + e.message);
+                return;
+            }
+
+            // Gather all data for AI
+            var verdictEl = document.getElementById('verdictText');
+            var cocEl = document.getElementById('metricCOC');
+            var capEl = document.getElementById('metricCapRate');
+            var dscrEl = document.getElementById('metricDSCR');
+            var cfEl = document.getElementById('metricCashFlow');
+            var issuesEl = document.getElementById('issuesList');
+            
+            var dealData = {
+                address: document.getElementById('address').value || 'Not specified',
+                propertyType: document.getElementById('propertyType').value,
+                units: getVal('units'),
+                yearBuilt: getVal('yearBuilt'),
+                purchasePrice: getVal('purchasePrice'),
+                grossRent: getVal('grossRent'),
+                currentVerdict: verdictEl ? verdictEl.textContent : 'N/A',
+                coc: cocEl ? cocEl.textContent : 'N/A',
+                capRate: capEl ? capEl.textContent : 'N/A',
+                dscr: dscrEl ? dscrEl.textContent : 'N/A',
+                cashFlow: cfEl ? cfEl.textContent : 'N/A',
+                issues: issuesEl ? issuesEl.innerText : 'None listed'
+            };
+
+            var aiPromptText = 'You are an experienced real estate underwriter. Analyze this deal and provide your professional assessment:\n\n' +
+                'Property: ' + dealData.address + '\n' +
+                'Type: ' + dealData.propertyType + ' (' + dealData.units + ' units)\n' +
+                'Year Built: ' + dealData.yearBuilt + '\n' +
+                'Purchase Price: $' + dealData.purchasePrice + '\n' +
+                'Monthly Rent: $' + dealData.grossRent + '\n\n' +
+                'Calculated Metrics:\n' +
+                '- Cash-on-Cash: ' + dealData.coc + '\n' +
+                '- Cap Rate: ' + dealData.capRate + '\n' +
+                '- DSCR: ' + dealData.dscr + '\n' +
+                '- Monthly Cash Flow: ' + dealData.cashFlow + '\n\n' +
+                'System Verdict: ' + dealData.currentVerdict + '\n' +
+                'Identified Issues: ' + dealData.issues + '\n\n' +
+                'Provide:\n1. Your overall assessment\n2. Key concerns an underwriter would flag\n3. Questions you would ask before approving\n4. Your recommendation (GO/WAIT/KILL) with reasoning';
+
+            document.getElementById('aiAnalysis').innerHTML = '<p class="text-gray-400">Analyzing deal...</p>';
+            document.getElementById('aiSection').classList.remove('hidden');
+
+            fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + apiKey
+                },
+                body: JSON.stringify({
+                    model: 'gpt-4o-mini',
+                    messages: [{role: 'user', content: aiPromptText}],
+                    max_tokens: 1000
+                })
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.error) {
+                    document.getElementById('aiAnalysis').innerHTML = '<p class="text-red-400">Error: ' + data.error.message + '</p>';
+                    if (data.error.code === 'invalid_api_key') {
+                        localStorage.removeItem('openai_api_key');
+                    }
+                } else {
+                    var analysis = data.choices[0].message.content;
+                    document.getElementById('aiAnalysis').innerHTML = '<div class="whitespace-pre-wrap">' + analysis + '</div>';
+                }
+            })
+            .catch(function(err) {
+                document.getElementById('aiAnalysis').innerHTML = '<p class="text-red-400">Error: ' + err.message + '</p>';
+            });
+        }
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

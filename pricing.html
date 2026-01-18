@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - Real Estate Without Bullsh*t</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Georgia', serif; }
+        .sans { font-family: system-ui, -apple-system, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="text-xl font-bold text-white">REBWB</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-300 hover:text-white transition">Home</a>
+                    <a href="book.html" class="text-gray-300 hover:text-white transition">Book</a>
+                    <a href="blog.html" class="text-gray-300 hover:text-white transition">Blog</a>
+                    <a href="course.html" class="text-gray-300 hover:text-white transition">Course</a>
+                    <a href="pricing.html" class="text-white font-semibold">Pricing</a>
+                    <a href="login.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="py-20 bg-gray-900 border-b border-gray-700">
+        <div class="max-w-2xl mx-auto px-6 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                Pay for Discipline. Not Hope.
+            </h1>
+            <p class="text-lg text-gray-400">
+                You can run one deal for free.<br>
+                If you want to remember what you learned, access is paid.
+            </p>
+        </div>
+    </section>
+
+    <!-- Pricing Tiers -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- Tier 1: Free -->
+                <div class="bg-gray-800 border border-gray-700 rounded-lg p-8">
+                    <p class="text-sm text-gray-400 sans mb-2">Free</p>
+                    <h3 class="text-xl text-white mb-4">One Honest Look</h3>
+                    <p class="text-3xl text-white mb-6 sans">$0</p>
+                    
+                    <ul class="space-y-3 text-gray-300 sans text-sm mb-8">
+                        <li>One Kill Switch run only</li>
+                        <li class="text-gray-500">No saving</li>
+                        <li class="text-gray-500">No reruns</li>
+                        <li class="text-gray-500">No history</li>
+                    </ul>
+                    
+                    <a href="kill-switch.html" class="block text-center border border-gray-600 hover:border-gray-400 text-gray-300 px-6 py-3 rounded-lg sans transition">
+                        Try Once
+                    </a>
+                </div>
+                
+                <!-- Tier 2: Discipline Access -->
+                <div id="discipline" class="bg-gray-800 border-2 border-blue-500 rounded-lg p-8">
+                    <p class="text-sm text-blue-400 sans mb-2">Most Popular</p>
+                    <h3 class="text-xl text-white mb-4">Unlimited Runs</h3>
+                    <p class="text-3xl text-white mb-1 sans">$79<span class="text-lg text-gray-400">/month</span></p>
+                    <p class="text-sm text-gray-400 sans mb-6">or $697/year (save $251)</p>
+                    
+                    <ul class="space-y-3 text-gray-300 sans text-sm mb-8">
+                        <li>Unlimited Kill Switch runs</li>
+                        <li>Deal history</li>
+                        <li>Verdict comparison</li>
+                        <li>Deal labels: Walked Away, Passed, Regretted</li>
+                    </ul>
+                    
+                    <button onclick="handleCheckout('discipline_monthly')" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg sans transition">
+                        Unlock Discipline
+                    </button>
+                </div>
+                
+                <!-- Tier 3: System Builder -->
+                <div id="system" class="bg-gray-800 border border-gray-700 rounded-lg p-8">
+                    <p class="text-sm text-gray-400 sans mb-2">System Builder</p>
+                    <h3 class="text-xl text-white mb-4">Full Infrastructure</h3>
+                    <p class="text-3xl text-white mb-1 sans">$149<span class="text-lg text-gray-400">/month</span></p>
+                    <p class="text-sm text-gray-400 sans mb-6">or $1,297/year (save $491)</p>
+                    
+                    <ul class="space-y-3 text-gray-300 sans text-sm mb-8">
+                        <li>Scenario stress tests</li>
+                        <li>Assumption exposure</li>
+                        <li>Deal Autopsy PDF</li>
+                        <li>Decision journal</li>
+                        <li>Pattern tagging</li>
+                    </ul>
+                    
+                    <button onclick="handleCheckout('system_onetime')" class="w-full border border-gray-600 hover:border-gray-400 text-gray-300 px-6 py-3 rounded-lg sans transition">
+                        Build My System
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guarantee -->
+    <section class="py-16 bg-gray-800 border-t border-gray-700">
+        <div class="max-w-2xl mx-auto px-6 text-center">
+            <p class="text-lg text-white mb-8">
+                "If this makes you less disciplined, get your money back."
+            </p>
+            <p class="text-sm text-gray-400 sans">
+                Pricing reflects enforcement, not features. Existing members are grandfathered.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-400 mb-4 md:mb-0">
+                    &copy; 2026 Real Estate Without Bullsh*t. All rights reserved.
+                </div>
+                <div class="flex space-x-6">
+                    <a href="about.html" class="text-gray-400 hover:text-white transition">About</a>
+                    <a href="faq.html" class="text-gray-400 hover:text-white transition">FAQ</a>
+                    <a href="mailto:support@rebwb.com" class="text-gray-400 hover:text-white transition">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const SUPABASE_URL = 'https://nzutywxvzcrjopvyayml.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56dXR5d3h2emNyam9wdnlheW1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg2MzIzMTEsImV4cCI6MjA4NDIwODMxMX0.C4UdwnQEebRwUrdbiNeQN2Wl4nQFeCLVAmzhDI8LKWI';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function handleCheckout(planType) {
+            const btn = event.target;
+            btn.textContent = 'Loading...';
+            btn.disabled = true;
+            
+            try {
+                let customerEmail = '';
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) customerEmail = user.email;
+                
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        planType,
+                        customerEmail,
+                        successUrl: window.location.origin + '/kill-switch.html?payment=success',
+                        cancelUrl: window.location.origin + '/pricing.html?payment=cancelled'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    throw new Error(result.error.message);
+                }
+                
+                if (result.data?.checkoutUrl) {
+                    window.location.href = result.data.checkoutUrl;
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Unable to start checkout. Please try again or contact support.');
+                btn.textContent = planType.includes('discipline') ? 'Unlock Discipline' : 'Build My System';
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Complete - REBWB</title>
+    <meta name="robots" content="noindex">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/analytics.js" defer></script>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex items-center justify-center">
+    <div class="text-center px-6 max-w-lg">
+        <div class="mb-8">
+            <svg class="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+        <h1 class="text-2xl font-semibold text-white mb-4">Order received.</h1>
+        <p class="text-gray-400 mb-8">
+            A confirmation has been sent to your email.<br>
+            Physical items ship within 5-7 business days.
+        </p>
+        <div class="space-y-4">
+            <a href="library.html" class="block text-gray-400 hover:text-white transition">Return to Library & Goods</a>
+            <a href="index.html" class="block text-gray-500 hover:text-gray-300 transition text-sm">Back to home</a>
+        </div>
+    </div>
+    <script>
+        if (typeof trackEvent === 'function') {
+            trackEvent('purchase_complete', { page: 'checkout_success' });
+        }
+    </script>
+</body>
+</html>

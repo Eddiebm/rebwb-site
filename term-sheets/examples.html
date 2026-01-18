@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Term Sheet Examples - REBWB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            .print-break { page-break-after: always; }
+            body { background: white; color: black; }
+            .term-sheet { border: 2px solid #333 !important; }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
+            <a href="../index.html" class="text-xl font-bold text-white">REBWB</a>
+            <div class="flex gap-4">
+                <button onclick="window.print()" class="text-gray-300 hover:text-white text-sm">Print/Save PDF</button>
+                <a href="index.html" class="text-gray-300 hover:text-white">← Back to Module</a>
+            </div>
+        </div>
+    </nav>
+    <script src="../js/auth.js"></script>
+    <script>requireAuth();</script>
+
+    <section class="py-12 bg-gray-900">
+        <div class="max-w-5xl mx-auto px-4">
+            <h1 class="text-3xl font-bold mb-2 text-center no-print">Term Sheet Examples</h1>
+            <p class="text-gray-400 text-center mb-8 no-print">12-Unit Apartment Building • $1,200,000 Purchase Price</p>
+
+            <!-- Good Term Sheet -->
+            <div class="term-sheet bg-white text-gray-900 rounded-lg p-8 mb-8 print-break">
+                <div class="flex justify-between items-start mb-6 border-b-2 border-green-600 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-green-700">TERM SHEET — "THE GOOD"</h2>
+                        <p class="text-gray-600">First Capital Commercial Lending</p>
+                    </div>
+                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded text-sm font-semibold">BORROWER-FRIENDLY</span>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6 text-sm">
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-3">Loan Terms</h3>
+                        <table class="w-full">
+                            <tr class="border-b"><td class="py-2 text-gray-600">Property</td><td class="py-2 font-semibold">12-Unit Multifamily</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Purchase Price</td><td class="py-2 font-semibold">$1,200,000</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Loan Amount</td><td class="py-2 font-semibold">$900,000 (75% LTV)</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Interest Rate</td><td class="py-2 font-semibold">6.25% Fixed</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Loan Term</td><td class="py-2 font-semibold">5 Years + Two 1-Year Extensions</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Amortization</td><td class="py-2 font-semibold">30 Years</td></tr>
+                        </table>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-3">Risk Factors</h3>
+                        <table class="w-full">
+                            <tr class="border-b"><td class="py-2 text-gray-600">DSCR Requirement</td><td class="py-2 font-semibold text-green-700">1.35x minimum</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Recourse</td><td class="py-2 font-semibold text-green-700">Non-Recourse (standard carve-outs)</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Prepayment</td><td class="py-2 font-semibold">3-2-1 step-down</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Rate Lock</td><td class="py-2 font-semibold text-green-700">30 days at application</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Reserves</td><td class="py-2 font-semibold">6 months PITI</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-green-50 rounded border border-green-200">
+                    <p class="text-green-800 text-sm"><strong>Assessment:</strong> Strong equity cushion, healthy cash flow margin, personal assets protected, ample time flexibility with extensions, pricing certainty with 30-day lock.</p>
+                </div>
+            </div>
+
+            <!-- OK Term Sheet -->
+            <div class="term-sheet bg-white text-gray-900 rounded-lg p-8 mb-8 print-break">
+                <div class="flex justify-between items-start mb-6 border-b-2 border-yellow-500 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-yellow-700">TERM SHEET — "THE OKAY"</h2>
+                        <p class="text-gray-600">Regional Bank Commercial Division</p>
+                    </div>
+                    <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded text-sm font-semibold">PROCEED WITH CAUTION</span>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6 text-sm">
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-3">Loan Terms</h3>
+                        <table class="w-full">
+                            <tr class="border-b"><td class="py-2 text-gray-600">Property</td><td class="py-2 font-semibold">12-Unit Multifamily</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Purchase Price</td><td class="py-2 font-semibold">$1,200,000</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Loan Amount</td><td class="py-2 font-semibold">$960,000 (80% LTV)</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Interest Rate</td><td class="py-2 font-semibold">6.50% Fixed</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Loan Term</td><td class="py-2 font-semibold">3 Years + One 1-Year Extension</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Amortization</td><td class="py-2 font-semibold">25 Years</td></tr>
+                        </table>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-3">Risk Factors</h3>
+                        <table class="w-full">
+                            <tr class="border-b"><td class="py-2 text-gray-600">DSCR Requirement</td><td class="py-2 font-semibold text-yellow-700">1.20x minimum</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Recourse</td><td class="py-2 font-semibold text-yellow-700">Partial (25% of loan balance)</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Prepayment</td><td class="py-2 font-semibold">2% flat for 2 years</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Rate Lock</td><td class="py-2 font-semibold text-yellow-700">14 days at commitment</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Reserves</td><td class="py-2 font-semibold">9 months PITI</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-yellow-50 rounded border border-yellow-200">
+                    <p class="text-yellow-800 text-sm"><strong>Assessment:</strong> Workable but tighter margins. Less equity cushion, minimal cash flow buffer, partial personal exposure ($240K at risk), shorter runway, and rate uncertainty.</p>
+                </div>
+            </div>
+
+            <!-- Bad Term Sheet -->
+            <div class="term-sheet bg-white text-gray-900 rounded-lg p-8 mb-8">
+                <div class="flex justify-between items-start mb-6 border-b-2 border-red-600 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-red-700">TERM SHEET — "THE BAD"</h2>
+                        <p class="text-gray-600">Hard Money Capital Partners</p>
+                    </div>
+                    <span class="bg-red-100 text-red-800 px-3 py-1 rounded text-sm font-semibold">HIGH RISK — WALK AWAY</span>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6 text-sm">
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-3">Loan Terms</h3>
+                        <table class="w-full">
+                            <tr class="border-b"><td class="py-2 text-gray-600">Property</td><td class="py-2 font-semibold">12-Unit Multifamily</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Purchase Price</td><td class="py-2 font-semibold">$1,200,000</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Loan Amount</td><td class="py-2 font-semibold">$1,020,000 (85% LTV)</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Interest Rate</td><td class="py-2 font-semibold">8.75% Variable</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Loan Term</td><td class="py-2 font-semibold">2 Years, No Extensions</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Amortization</td><td class="py-2 font-semibold">Interest-Only</td></tr>
+                        </table>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-3">Risk Factors</h3>
+                        <table class="w-full">
+                            <tr class="border-b"><td class="py-2 text-gray-600">DSCR Requirement</td><td class="py-2 font-semibold text-red-700">1.10x minimum</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Recourse</td><td class="py-2 font-semibold text-red-700">Full Personal Guarantee</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Prepayment</td><td class="py-2 font-semibold">5% flat, no decline</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Rate Lock</td><td class="py-2 font-semibold text-red-700">None — floating rate</td></tr>
+                            <tr class="border-b"><td class="py-2 text-gray-600">Reserves</td><td class="py-2 font-semibold">12 months PITI</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-red-50 rounded border border-red-200">
+                    <p class="text-red-800 text-sm"><strong>Assessment:</strong> Designed for the lender to win. Minimal equity cushion (15%), razor-thin cash flow margin, full personal exposure to all assets, no time flexibility, and complete rate uncertainty. Any market downturn, vacancy spike, or personal setback exposes you completely.</p>
+                </div>
+            </div>
+
+            <div class="text-center no-print">
+                <a href="diagnostic.html" class="inline-block bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-semibold">Score Your Term Sheet →</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

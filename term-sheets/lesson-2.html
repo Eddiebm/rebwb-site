@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 2: LTV - Term Sheets Module</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
+            <a href="../index.html" class="text-xl font-bold text-white">REBWB</a>
+            <a href="index.html" class="text-gray-300 hover:text-white">← Module Overview</a>
+        </div>
+    </nav>
+    <script src="../js/auth.js"></script>
+    <script>requireAuth();</script>
+
+    <section class="py-12 bg-gray-900">
+        <div class="max-w-3xl mx-auto px-4">
+            <span class="text-amber-400 text-sm font-semibold">LESSON 2</span>
+            <h1 class="text-3xl font-bold mt-2 mb-6">LTV: Your Margin for Error</h1>
+            
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700 mb-8">
+                <audio controls class="w-full">
+                    <source src="../audio/termsheets/lesson-2.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+
+            <div class="prose prose-invert max-w-none">
+                <p class="text-gray-300 leading-relaxed mb-4">LTV tells you how much of the property's value the lender is willing to finance. 80% LTV means you put down 20%. Simple math.</p>
+                <p class="text-gray-300 leading-relaxed mb-4">But here's what most people miss: <strong class="text-white">LTV is not just about your down payment today. It's about your margin for error tomorrow.</strong></p>
+                
+                <div class="grid md:grid-cols-2 gap-4 my-6">
+                    <div class="bg-green-900/20 border border-green-700 rounded-lg p-4">
+                        <p class="font-semibold text-green-400">80% LTV</p>
+                        <p class="text-gray-300 text-sm mt-1">20% cushion. A 10% value drop? Still above water.</p>
+                    </div>
+                    <div class="bg-red-900/20 border border-red-700 rounded-lg p-4">
+                        <p class="font-semibold text-red-400">90% LTV</p>
+                        <p class="text-gray-300 text-sm mt-1">10% cushion. A 10% drop puts you underwater.</p>
+                    </div>
+                </div>
+
+                <div class="bg-amber-900/20 border-l-4 border-amber-500 p-4 my-6">
+                    <p class="font-semibold text-amber-300">For Our 12-Unit Deal:</p>
+                    <p class="text-gray-300 mt-2">80% LTV = $960K loan. 75% LTV = $840K loan.</p>
+                    <p class="text-gray-300 mt-1">That extra $120K in cash you'd need to bring? That's not a penalty. That's your insurance policy.</p>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-12 pt-6 border-t border-gray-700">
+                <a href="lesson-1.html" class="text-gray-400 hover:text-white">← Previous</a>
+                <a href="lesson-3.html" class="text-amber-400 hover:text-amber-300 font-semibold">Next: DSCR →</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,139 @@
+/* Custom Styles for REBWB */
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom hover colors */
+.hover\:bg-gray-750:hover {
+    background-color: #2d3748;
+}
+
+.bg-gray-850 {
+    background-color: #1a202c;
+}
+
+/* Input focus improvements */
+input:focus {
+    outline: none;
+}
+
+/* Smooth transitions */
+* {
+    transition-property: color, background-color, border-color, opacity, transform;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+}
+
+button,
+a {
+    transition-duration: 200ms;
+}
+
+/* Module toggle animations */
+.module-content,
+.faq-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+}
+
+.module-content.active,
+.faq-content.active {
+    max-height: 1000px;
+    transition: max-height 0.4s ease-in, padding 0.3s ease-in;
+}
+
+.module-arrow.rotated,
+.faq-arrow.rotated {
+    transform: rotate(180deg);
+}
+
+/* Gradient text animations */
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.bg-gradient-to-r {
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+}
+
+/* Remove number input arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Card hover effects */
+.hover\:border-blue-500:hover {
+    border-color: #3b82f6;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a202c;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4a5568;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #718096;
+}
+
+/* Mobile menu animation */
+#mobile-menu {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Result highlighting */
+.result-positive {
+    color: #10b981;
+}
+
+.result-negative {
+    color: #ef4444;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+    .module-toggle,
+    .faq-toggle {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}

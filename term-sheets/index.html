@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Term Sheets Module - REBWB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="../index.html" class="text-xl font-bold text-white">REBWB</a>
+                <div class="hidden md:flex space-x-8">
+                    <a href="../course.html" class="text-gray-300 hover:text-white transition">← Back to Course</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script src="../js/auth.js"></script>
+    <script>requireAuth();</script>
+
+    <section class="bg-gradient-to-br from-gray-900 via-amber-900/20 to-gray-900 py-16">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <span class="bg-amber-600 text-white px-3 py-1 rounded-full text-sm font-semibold mb-4 inline-block">FINANCING MODULE</span>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Loan Term Sheets</h1>
+            <p class="text-2xl text-amber-300 mb-6">How Real Estate Deals Actually Break</p>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">A borrower-first approach to reading, evaluating, and negotiating financing terms. Learn what lenders won't tell you.</p>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="grid gap-4">
+                <a href="lesson-1.html" class="block bg-gray-800 rounded-lg border border-gray-700 p-6 hover:border-amber-600 transition group">
+                    <div class="flex items-center gap-4">
+                        <span class="bg-amber-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">1</span>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg group-hover:text-amber-300">Introduction: The Document That Decides Everything</h3>
+                            <p class="text-gray-400 text-sm">Why term sheets matter more than the deal itself</p>
+                        </div>
+                        <span class="text-gray-400 text-sm">~1 min</span>
+                    </div>
+                </a>
+                <a href="lesson-2.html" class="block bg-gray-800 rounded-lg border border-gray-700 p-6 hover:border-amber-600 transition group">
+                    <div class="flex items-center gap-4">
+                        <span class="bg-amber-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">2</span>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg group-hover:text-amber-300">LTV: Your Margin for Error</h3>
+                            <p class="text-gray-400 text-sm">Understanding loan-to-value as survival insurance</p>
+                        </div>
+                        <span class="text-gray-400 text-sm">~1 min</span>
+                    </div>
+                </a>
+                <a href="lesson-3.html" class="block bg-gray-800 rounded-lg border border-gray-700 p-6 hover:border-amber-600 transition group">
+                    <div class="flex items-center gap-4">
+                        <span class="bg-amber-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">3</span>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg group-hover:text-amber-300">DSCR: Can Your Property Pay Its Bills?</h3>
+                            <p class="text-gray-400 text-sm">Debt service coverage and cash flow protection</p>
+                        </div>
+                        <span class="text-gray-400 text-sm">~1.5 min</span>
+                    </div>
+                </a>
+                <a href="lesson-4.html" class="block bg-gray-800 rounded-lg border border-gray-700 p-6 hover:border-amber-600 transition group">
+                    <div class="flex items-center gap-4">
+                        <span class="bg-amber-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">4</span>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg group-hover:text-amber-300">Recourse: What You're Really Risking</h3>
+                            <p class="text-gray-400 text-sm">Personal liability and the difference between losing a deal and losing everything</p>
+                        </div>
+                        <span class="text-gray-400 text-sm">~1.5 min</span>
+                    </div>
+                </a>
+                <a href="lesson-5.html" class="block bg-gray-800 rounded-lg border border-gray-700 p-6 hover:border-amber-600 transition group">
+                    <div class="flex items-center gap-4">
+                        <span class="bg-amber-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">5</span>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg group-hover:text-amber-300">Good, OK, and Bad: Reading Real Term Sheets</h3>
+                            <p class="text-gray-400 text-sm">Line-by-line comparison of three term sheets for the same deal</p>
+                        </div>
+                        <span class="text-gray-400 text-sm">~1.5 min</span>
+                    </div>
+                </a>
+                <a href="lesson-6.html" class="block bg-gray-800 rounded-lg border border-gray-700 p-6 hover:border-amber-600 transition group">
+                    <div class="flex items-center gap-4">
+                        <span class="bg-amber-600 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold">6</span>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg group-hover:text-amber-300">The Borrower Risk Diagnostic Tool</h3>
+                            <p class="text-gray-400 text-sm">A simple scoring framework for any term sheet</p>
+                        </div>
+                        <span class="text-gray-400 text-sm">~1.5 min</span>
+                    </div>
+                </a>
+                <a href="lesson-7.html" class="block bg-gray-800 rounded-lg border border-amber-600 p-6 hover:bg-amber-900/20 transition group">
+                    <div class="flex items-center gap-4">
+                        <span class="bg-amber-700 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm">★</span>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-lg group-hover:text-amber-300">Bonus: Final Principles & The Walk-Away Mindset</h3>
+                            <p class="text-gray-400 text-sm">What separates survivors from casualties</p>
+                        </div>
+                        <span class="text-gray-400 text-sm">~1.5 min</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="mt-12 grid md:grid-cols-2 gap-6">
+                <a href="diagnostic.html" class="block bg-gradient-to-br from-amber-900/30 to-gray-800 rounded-lg border border-amber-600 p-6 hover:border-amber-400 transition">
+                    <div class="text-amber-400 mb-3">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Risk Diagnostic Tool</h3>
+                    <p class="text-gray-400 text-sm">Score any term sheet. Get a Proceed / Renegotiate / Walk Away verdict.</p>
+                </a>
+                <a href="examples.html" class="block bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg border border-gray-600 p-6 hover:border-gray-400 transition">
+                    <div class="text-gray-400 mb-3">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Term Sheet Examples</h3>
+                    <p class="text-gray-400 text-sm">View the Good, OK, and Bad term sheets side-by-side.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-400">
+            <p>&copy; 2024 REBWB. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 5: Good, OK, Bad - Term Sheets Module</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <nav class="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
+            <a href="../index.html" class="text-xl font-bold text-white">REBWB</a>
+            <a href="index.html" class="text-gray-300 hover:text-white">← Module Overview</a>
+        </div>
+    </nav>
+    <script src="../js/auth.js"></script>
+    <script>requireAuth();</script>
+
+    <section class="py-12 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4">
+            <span class="text-amber-400 text-sm font-semibold">LESSON 5</span>
+            <h1 class="text-3xl font-bold mt-2 mb-6">Good, OK, and Bad: Reading Real Term Sheets</h1>
+            
+            <div class="bg-gray-800 rounded-lg p-6 border border-gray-700 mb-8">
+                <audio controls class="w-full">
+                    <source src="../audio/termsheets/lesson-5.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+
+            <p class="text-gray-300 mb-8">Same property, same purchase price, radically different risk profiles. Here's how the three term sheets compare:</p>
+
+            <div class="grid md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-green-900/20 border-2 border-green-600 rounded-lg p-5">
+                    <h3 class="font-bold text-green-400 text-lg mb-4">THE GOOD</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex justify-between"><span class="text-gray-400">LTV</span><span class="text-white">75%</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">DSCR</span><span class="text-white">1.35</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">Recourse</span><span class="text-white">Non-recourse</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">Term</span><span class="text-white">5 years + 2 ext</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">Rate Lock</span><span class="text-white">30 days</span></li>
+                    </ul>
+                    <p class="text-green-300 text-xs mt-4">Equity cushion, cash flow margin, personal asset protection, time flexibility.</p>
+                </div>
+
+                <div class="bg-yellow-900/20 border-2 border-yellow-600 rounded-lg p-5">
+                    <h3 class="font-bold text-yellow-400 text-lg mb-4">THE OKAY</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex justify-between"><span class="text-gray-400">LTV</span><span class="text-white">80%</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">DSCR</span><span class="text-white">1.20</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">Recourse</span><span class="text-white">Partial (25%)</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">Term</span><span class="text-white">3 years + 1 ext</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">Rate Lock</span><span class="text-white">14 days</span></li>
+                    </ul>
+                    <p class="text-yellow-300 text-xs mt-4">Workable, but tighter. Less room for error on every dimension.</p>
+                </div>
+
+                <div class="bg-red-900/20 border-2 border-red-600 rounded-lg p-5">
+                    <h3 class="font-bold text-red-400 text-lg mb-4">THE BAD</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex justify-between"><span class="text-gray-400">LTV</span><span class="text-white">85%</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">DSCR</span><span class="text-white">1.10</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">Recourse</span><span class="text-white">Full recourse</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">Term</span><span class="text-white">2 years, no ext</span></li>
+                        <li class="flex justify-between"><span class="text-gray-400">Rate Lock</span><span class="text-white">None</span></li>
+                    </ul>
+                    <p class="text-red-300 text-xs mt-4">Designed for the lender to win and you to lose.</p>
+                </div>
+            </div>
+
+            <a href="examples.html" class="inline-block bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm">View Full Term Sheet Documents →</a>
+
+            <div class="flex justify-between mt-12 pt-6 border-t border-gray-700">
+                <a href="lesson-4.html" class="text-gray-400 hover:text-white">← Previous</a>
+                <a href="lesson-6.html" class="text-amber-400 hover:text-amber-300 font-semibold">Next: Diagnostic Tool →</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
