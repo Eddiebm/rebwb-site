@@ -199,3 +199,37 @@ function setResultColor(id, value) {
         }
     }
 }
+
+
+// Cookie Consent Banner
+function initCookieConsent() {
+    if (localStorage.getItem('rebwb-cookie-consent')) return;
+    
+    const banner = document.createElement('div');
+    banner.id = 'cookie-banner';
+    banner.innerHTML = `
+        <div style="position:fixed;bottom:0;left:0;right:0;background:#1f2937;border-top:1px solid #374151;padding:16px 24px;z-index:9999;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;">
+            <p style="color:#d1d5db;margin:0;flex:1;min-width:280px;">
+                We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
+                <a href="cookie-policy.html" style="color:#60a5fa;text-decoration:underline;">Learn more</a>
+            </p>
+            <div style="display:flex;gap:12px;">
+                <button onclick="acceptCookies()" style="background:#2563eb;color:white;padding:8px 20px;border-radius:6px;border:none;cursor:pointer;font-weight:500;">Accept</button>
+                <button onclick="declineCookies()" style="background:#374151;color:#d1d5db;padding:8px 20px;border-radius:6px;border:none;cursor:pointer;">Decline</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(banner);
+}
+
+function acceptCookies() {
+    localStorage.setItem('rebwb-cookie-consent', 'accepted');
+    document.getElementById('cookie-banner')?.remove();
+}
+
+function declineCookies() {
+    localStorage.setItem('rebwb-cookie-consent', 'declined');
+    document.getElementById('cookie-banner')?.remove();
+}
+
+document.addEventListener('DOMContentLoaded', initCookieConsent);
