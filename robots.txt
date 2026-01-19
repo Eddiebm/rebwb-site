@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://realestatewithoutbs.com/sitemap.xml
+Sitemap: https://www.realestatewithoutbullshit.com/sitemap.xml
