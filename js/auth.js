@@ -84,3 +84,22 @@ async function updateNavForAuth() {
         item.style.display = loggedIn ? 'none' : 'block';
     });
 }
+
+
+// Password reset
+async function resetPassword(email) {
+    const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/update-password.html`
+    });
+    if (error) throw error;
+    return data;
+}
+
+// Update password (for logged-in users or after reset)
+async function updatePassword(newPassword) {
+    const { data, error } = await supabaseClient.auth.updateUser({
+        password: newPassword
+    });
+    if (error) throw error;
+    return data;
+}
